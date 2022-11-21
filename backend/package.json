@@ -1,0 +1,17 @@
+{
+  "name": "odometer",
+  "version": "1.0.0",
+  "description": "project for software requirement enginerring, 2022, ZJU",
+  "main": "index.js",
+  "scripts": {
+    "client-install": "cd client && npm install",
+    "server-install": "cd backend && npm install",
+    "install-dependencies": "npm run server-install && npm run client-install",
+    "server": "nodemon server.js --ignore client"
+  },
+  "author": "odometer",
+  "license": "ISC",
+  "dependencies": {
+    "nodemon": "^2.0.20"
+  }
+}
