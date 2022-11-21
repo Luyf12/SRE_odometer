@@ -1,9 +1,7 @@
 const asyncWrapper = require("../middleware/async");
 const { createCustomError } = require("../errors/custom-error");
 const RepoSchema = require("../models/repo");
-
 const ObjectId = require("mongodb").ObjectId;
-
 const { Octokit } = require("@octokit/core");
 const res = require("express/lib/response");
 
@@ -15,6 +13,15 @@ const {
   RepoGetStargazers,}
    = require("./company");
 // ===============================
+// ======= add, get all data======
+const {
+  RepoGetCommitData,
+  RepoGetPullData,
+  RepoGetIssueData,
+  RepoGetStarData
+} = require("./import-db");
+// ===============================
+
 
 const octokit = new Octokit({
   auth: `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`,
@@ -53,14 +60,20 @@ const GetMessage = async (req, res) => {
       forks: repoMessage.data.forks,
       stars: repoMessage.data.watchers,
       open_issues: repoMessage.data.open_issues,
-      commit_frequency: await RepoGetCommitFrequency(
+    //================ modify ==========
+      star_frequency: await RepoGetStarData(
         repoMessage.data.owner.login,
         repoMessage.data.name
       ),
-      issue_frequency: await RepoGetIssueFrequency(
+      commit_frequency: await RepoGetCommitData(
         repoMessage.data.owner.login,
         repoMessage.data.name
       ),
+      issue_frequency: await RepoGetIssueData(
+        repoMessage.data.owner.login,
+        repoMessage.data.name
+      ),
+    // ==================================
       contributors: await RepoGetContributors(
         repoMessage.data.owner.login,
         repoMessage.data.name
@@ -77,11 +90,15 @@ const GetMessage = async (req, res) => {
       language: await RepoGetLanguage(
         repoMessage.data.owner.login,
         repoMessage.data.name
-      ),
+      )
+      /*new add */
+  
     });
-    res.status(201).json({ status: "success!" });
+    console.log("finish");
+    // res.status(201).json({ status: "success!" });
   } catch (err) {
-    res.status(404).json(err);
+    // res.status(404).json(err);
+    console.log(err);
   }
 };
 

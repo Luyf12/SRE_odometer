@@ -1,24 +1,17 @@
 {
-  "name": "dashboard",
+  "name": "odometer",
   "version": "1.0.0",
-  "description": "",
-  "main": "server.js",
+  "description": "project for software requirement enginerring, 2022, ZJU",
+  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "client-install": "cd client && npm install",
+    "server-install": "cd backend && npm install",
+    "install-dependencies": "npm run server-install && npm run client-install",
+    "server": "nodemon server.js --ignore client"
   },
-  "author": "",
+  "author": "odometer",
   "license": "ISC",
   "dependencies": {
-    "@octokit/core": "^3.5.1",
-    "cors": "^2.8.5",
-    "dotenv": "^10.0.0",
-    "express": "^4.17.1",
-    "helmet": "^4.6.0",
-    "mongoose": "^6.1.2",
-    "node-fetch": "^3.1.0",
-    "xss-clean": "^0.1.1"
-  },
-  "devDependencies": {
-    "nodemon": "^2.0.15"
+    "nodemon": "^2.0.20"
   }
 }

@@ -25,6 +25,10 @@ const Repo = new mongoose.Schema({
         type: Number,
         required: [true, 'must provide open_issues']
     },
+    star_frequency:{
+        type:Object,
+        required: [true, 'must provide star_frequency']
+    },
     commit_frequency:{
         type:Object,
         required: [true, 'must provide commit_frequency']

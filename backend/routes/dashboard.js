@@ -18,6 +18,8 @@ const {
   getStargazerData,
 } = require("../controllers/company");
 // ===============================
+const { GetFrequency } = require("../controllers/frequency");
+
 
 router.route("/import").post(GetMessage);
 router.route("/login").post(CheckUser);
@@ -29,6 +31,10 @@ router.route("/delete").post(DeleteRepo);
 router.route("/committerCompany").post(getCommitterData);
 router.route("/stargazerCompany").post(getStargazerData);
 router.route("/issueCompany").post(getIssueData);
+// ===============================
+// ===============================
+// get frequecny
+router.route("/getFrequency").post(GetFrequency);
 // ===============================
 
 
