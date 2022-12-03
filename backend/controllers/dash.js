@@ -10,8 +10,8 @@ const CompanySchema = require("../models/company");
 const {
   RepoGetCommitters,
   RepoGetIssues,
-  RepoGetStargazers,}
-   = require("./company");
+  RepoGetStargazers, }
+  = require("./company");
 // ===============================
 // ======= add, get all data======
 const {
@@ -30,7 +30,7 @@ const octokit = new Octokit({
 
 const GetMessage = async (req, res) => {
   try {
-    
+
     const repoMessage = await octokit.request("GET /repos/{owner}/{repo}", {
       owner: req.body.owner,
       repo: req.body.repoName,
@@ -60,7 +60,7 @@ const GetMessage = async (req, res) => {
       forks: repoMessage.data.forks,
       stars: repoMessage.data.watchers,
       open_issues: repoMessage.data.open_issues,
-    //================ modify ==========
+      //================ modify ==========
       star_frequency: await RepoGetStarData(
         repoMessage.data.owner.login,
         repoMessage.data.name
@@ -73,7 +73,7 @@ const GetMessage = async (req, res) => {
         repoMessage.data.owner.login,
         repoMessage.data.name
       ),
-    // ==================================
+      // ==================================
       contributors: await RepoGetContributors(
         repoMessage.data.owner.login,
         repoMessage.data.name
@@ -92,7 +92,7 @@ const GetMessage = async (req, res) => {
         repoMessage.data.name
       )
       /*new add */
-  
+
     });
     console.log("finish");
     // res.status(201).json({ status: "success!" });
@@ -436,9 +436,71 @@ const RepoGetLanguage = async (owner, name) => {
   return repoMessage.data;
 };
 
+
+const { DealPullLabels } = require("./design");
+const {
+  DesignFrequencySchema,
+  TopicSchema,
+  TopicFrequencySchema
+} = require("../models/design")
+
+const GetDesignMessage = async (req, res) => {
+  try {
+    const detail = await DealPullLabels();
+    for (let i = 0; i < detail.prTopic.length; i++) {
+      const CreateTopic = await TopicSchema.create({
+        topic: detail.prTopic[i].topic,
+        num: detail.prTopic[i].num
+      })
+    }
+    // for (let i = 0; i < detail.topicFre.length; i++) {
+    //   const CreateTopicFre = await TopicFrequencySchema.create({
+
+    //   })
+    // }
+    for (let i = 0; i < detail.designFre.length; i++) {
+      const CreateDesignFre = await DesignFrequencySchema.create({
+        time: detail.designFre[i].time,
+        design: detail.designFre[i].design,
+        undesign: detail.designFre[i].undesign
+      })
+    }
+  }
+  catch {
+    console.log(err);
+  }
+}
+
+const getDesignFrequency = async (req, res) => {
+  try{
+    const ret = DesignFrequencySchema.findOne({
+      date: req.body.date
+    })
+    res.status(201).json({ret})
+  }
+  catch(err){
+    res.status(404).json(err)
+  }
+}
+
+const getTopic = async (req, res) => {
+  try {
+    const ret = TopicSchema.findOne({
+      date: req.body.date
+    })
+    res.status(201).json({ret})
+  }
+  catch(err){
+    res.status(404).json(err)
+  }
+}
+
 module.exports = {
   GetMessage,
   SearchRepoName,
   GetDashboard,
   DeleteRepo,
+  GetDesignMessage,
+  getDesignFrequency,
+  getTopic
 };
