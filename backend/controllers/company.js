@@ -149,15 +149,18 @@ const RepoGetCommitters = async (owner, name) => {
         company.set(company_name, company.get(company_name)+1);
       }
     }
-    
   }
-
   var c = Array.from(company);
   c.sort(function(a, b){return b[1] - a[1]});
+  let sum = 0;
+  for(var[key, value] of c){
+    sum += value
+  }
   for(var[key, value] of c){
     var ss = {
       company: key,
       num: value,
+      precent: 1.0 * value / sum
     };
     result.push(ss);
   }
@@ -206,10 +209,15 @@ const RepoGetStargazers = async (owner, name) => {
   }
   var c = Array.from(company);
   c.sort(function(a, b){return b[1] - a[1]});
+  let sum = 0;
+  for(var[key, value] of c){
+    sum += value
+  }
   for(var[key, value] of c){
     var ss = {
       company: key,
       num: value,
+      precent: 1.0 * value / sum
     };
     result.push(ss);
   }
@@ -253,14 +261,18 @@ const RepoGetIssues = async (owner, name) => {
         company.set(company_name, company.get(company_name)+1);
       }
     }
-    
   }
   var c = Array.from(company);
   c.sort(function(a, b){return b[1] - a[1]});
+  let sum = 0;
+  for(var[key, value] of c){
+    sum += value
+  }
   for(var[key, value] of c){
     var ss = {
       company: key,
       num: value,
+      precent: 1.0 * value / sum
     };
     result.push(ss);
   }
@@ -268,11 +280,11 @@ const RepoGetIssues = async (owner, name) => {
   return result;
 };
 
-const getCommitterData = async (name_, owner_) => {
+const getCommitterData = async (req, res) => {
   try {
     const detail = await CompanySchema.findOne({
-        name: name_,
-        owner: owner_,
+        name: req.body.name,
+        owner: req.body.owner,
       });
     const result = detail.committers;
     console.log(result);
@@ -282,11 +294,11 @@ const getCommitterData = async (name_, owner_) => {
   }
 };
 
-const getIssueData = async (name_, owner_) => {
+const getIssueData = async (req, res) => {
   try {
     const detail = await CompanySchema.findOne({
-        name: name_,
-        owner: owner_,
+        name: req.body.name,
+        owner: req.body.owner,
       });
     const result = detail.issues;
     console.log(result);
@@ -296,11 +308,11 @@ const getIssueData = async (name_, owner_) => {
   }
 };
 
-const getStargazerData = async (name_, owner_) => {
+const getStargazerData = async (req, res) => {
   try {
     const detail = await CompanySchema.findOne({
-        name: name_,
-        owner: owner_,
+        name: req.body.name,
+        owner: req.body.owner,
       });
     const result = detail.stargazers;
     console.log(result);
@@ -309,6 +321,7 @@ const getStargazerData = async (name_, owner_) => {
     res.status(404).json(err);
   }
 };
+
 
   module.exports = {
     RepoGetCommitters,
