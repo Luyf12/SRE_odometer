@@ -21,7 +21,7 @@ const {
   RepoGetStarData
 } = require("./import-db");
 // ===============================
-
+const { DealPullLabels } = require("./design");
 
 const octokit = new Octokit({
   auth: `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`,
@@ -35,6 +35,9 @@ const GetMessage = async (req, res) => {
       owner: req.body.owner,
       repo: req.body.repoName,
     });
+
+    // ================================ 
+    await DealPullLabels(req.body.owner, req.body.repoName);
     // =========== add ===============
     const CreateCompany = await CompanySchema.create({
       name: repoMessage.data.name,
@@ -52,7 +55,7 @@ const GetMessage = async (req, res) => {
         repoMessage.data.name
       ),
     });
-    // ================================ 
+    // ================================
     const CreateRepo = await RepoSchema.create({
       name: repoMessage.data.name,
       owner: repoMessage.data.owner.login,
@@ -437,89 +440,9 @@ const RepoGetLanguage = async (owner, name) => {
 };
 
 
-const { DealPullLabels } = require("./design");
-const {
-  DesignFrequencySchema,
-  TopicSchema,
-  TopicFrequencySchema
-} = require("../models/design")
-
-const GetDesignMessage = async (req, res) => {
-  try {
-    const detail = await DealPullLabels();
-    for (let i = 0; i < detail.prTopic.length; i++) {
-      const CreateTopic = await TopicSchema.create({
-        topic: detail.prTopic[i].topic,
-        num: detail.prTopic[i].num
-      })
-    }
-    for(let i = 0; i < detail.topicFre.length; i++){
-      const CreateTopicFrequency = await TopicFrequencySchema.create({
-        time: detail.topicFre[i].time,
-        details: detail.topicFre[i].wordCountList
-      })
-    }
-    // for (let i = 0; i < detail.topicFre.length; i++) {
-    //   const CreateTopicFre = await TopicFrequencySchema.create({
-
-    //   })
-    // }
-    for (let i = 0; i < detail.designFre.length; i++) {
-      const CreateDesignFre = await DesignFrequencySchema.create({
-        time: detail.designFre[i].time,
-        design: detail.designFre[i].design,
-        undesign: detail.designFre[i].undesign
-      })
-    }
-  }
-  catch {
-    console.log(err);
-  }
-}
-
-const getDesignFrequency = async (req, res) => {
-  try{
-    const ret = DesignFrequencySchema.findOne({
-      date: req.body.date
-    })
-    res.status(201).json({ret})
-  }
-  catch(err){
-    res.status(404).json(err)
-  }
-}
-
-const getTopic = async (req, res) => {
-  try {
-    const ret = TopicSchema.findOne({
-      date: req.body.date
-    })
-    res.status(201).json({ret})
-  }
-  catch(err){
-    res.status(404).json(err)
-  }
-}
-
-const getTopicFrequency = async (req, res) => {
-  try {
-    const ret = TopicFrequencySchema.findOne({
-      date: req.body.date
-    })
-    res.status(201).json({ret})
-  }
-  catch(err){
-    res.status(404).json(err)
-  }
-}
-
 module.exports = {
   GetMessage,
   SearchRepoName,
   GetDashboard,
   DeleteRepo,
-  GetDesignMessage,
-  getDesignFrequency,
-  getTopic,
-  getTopicFrequency
 };
