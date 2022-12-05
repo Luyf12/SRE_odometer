@@ -1,7 +1,5 @@
 const asyncWrapper = require("../middleware/async");
 const { createCustomError } = require("../errors/custom-error");
-const DesignSchema = require("../models/company");
-
 const { Octokit } = require("@octokit/core");
 const res = require("express/lib/response");
 
@@ -9,133 +7,172 @@ const octokit = new Octokit({
     auth: `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`,
     //auth可以去https://github.com/settings/tokens生成，上面这个auth是永久的
 });
+const DesignFrequencySchema = require("../models/designFreq");
+const TopicFrequencySchema = require("../models/topicFrequency")
+const TopicSchema = require("../models/topic");
 
 const designKeyWords = ['code', 'maintain', 'test', 'robust',
-    'perform', 'config', 'document', 'clarif'];
+'perform', 'config', 'document', 'clarif'];
+const totalCount = [0,0,0,0,0,0,0,0];
 
-const DealPullLabels = async (req, res) => {
+const DealPullLabels = async (owner, name) => {
     console.log('Processing labels now')
 
-    var designFre = []  //[{time, design, undesign}]
-    var topicFre = []    //[{time, wordCountList: [{topic, count}]}]
-    let timeSave = []   //暂存出现过的月份
-    var prTopicCount = [];  //最后需要转为列表数组返回
-    var prTopic = []    //[{topic, num}]
-    let count = 0;
-
-    for(let i = 0; i < designKeyWords.length; i++)
-        prTopicCount.push(0);
-
-    while (count++ < 100) {
+    var wordCountList = new Map();
+    var lastTime;
+    var time;
+    var isDesign = 0, nonDesign = 0;
+    var flag = 1;
+    // 这里只统计最近3年的pr，以月份为单位
+    for(var i = 0;; i++) {
         const pullBody = await octokit.request(
             "GET /repos/{owner}/{repo}/pulls",
             {
-                owner: pytorch,
-                repo: pytorch,
-                page: count,
+                owner: owner,
+                repo: name,
+                page: i,
                 per_page: 100,
                 state: "all"
             }
         )
         if (pullBody.data.length == 0)
             break;
-
-        console.log('count is '+ count + '\n');
-
+        // console.log(wordCountList)
         //处理一条pr
         for(let i = 0; i < pullBody.data.length; i++)
         {
-            let time = pullBody.data[i].created_at.slice(0, 7)
-            let detail = pullBody.data[i].labels;   //这个PR的详细label信息
-            let isDesign = false;   //判断这个PR是不是设计相关
-            // let pr_topic_mouthcount = {};
-            // for(let j = 0; j < designKeyWords.length; j++)
-            //     pr_topic_mouthcount[designKeyWords[j]] = 0;
-            // let wordCountList = {};  //统计在这个pr里，每个设计相关单词分别出现过多少次
-            // for(let j = 0; j < designKeyWords.length; j++)
-            // {
-            //     wordCountList[designKeyWords[j]] = 0;   //初始化,增加每个单词为新的属性并初始化出现次数为0
-            // }
-            //好像把单词名存成一个属性更好一点
-            let wordCountList = [{topic, count}]
-            for(let j = 0; j < designKeyWords.length; j++)
-            {
-                wordCountList.push({topic: designKeyWords[j], count: 0})
-            }
-
-            //遍历这个pr的每一个标签，判断与哪些设计词相关
-            for(let j = 0; j < detail.length; j++)
-            {
-                let designRelate = judgeDesign(detail)
-                for(let k = 0; k < designRelate.length; k++)
-                {
-                    if(designRelate[k])
-                    {
-                        isDesign = true
-                        wordCountList[k].count++
-                        prTopicCount[k]++
+            // 切片如果是(0, 10)则统计的是月的数据，统计周的话更复杂 可以看import-db文件里别人写的
+            time = pullBody.data[i].created_at.slice(0, 7)
+            if(lastTime == null)
+                lastTime = time;
+            if(time == lastTime){
+                let detail = pullBody.data[i].labels;   //这个PR的详细label信息
+                //遍历这个pr的每一个标签，判断与哪些设计词相关
+                for(let j = 0; j < detail.length; j++){
+                    let designRelate = judgeDesign(detail[j])
+                    if(designRelate.length == 0)
+                        nonDesign += 1;
+                    else isDesign += 1;
+                    for(let k = 0; k < designRelate.length; k++){
+                        if(designRelate[k]){
+                            for(let p = 0; p < designKeyWords.length; p++){
+                                if(designKeyWords[p] == designRelate[k])
+                                totalCount[p] += 1;
+                            }
+                            if(!wordCountList.has(designRelate[k])){
+                                wordCountList.set(designRelate[k], 1);
+                            }else{
+                                wordCountList.set(designRelate[k], wordCountList.get(designRelate[k])+1);
+                            }
+                        }
                     }
                 }
-            }
-            if(isDesign)    //该PR是设计相关的
-            {
-                // if(design_fre[time] == null)
-                if(timeSave.includes(time)) //该月份之前出现过
-                {
-                    let timeIndex = timeSave.indexOf(time);
-                    // design_fre[index].
-                    designFre[timeIndex].design++
-                    for(let j = 0; j < designKeyWords.length; j++)
-                    {
-                        topicFre[timeIndex].wordCountList[j].count++
-                    }
-                }
-                else    //该月份之前没出现过
-                {
-                    timeSave.push(time) //存一下这个月份
-                    topicFre.push({time:time, wordCountList:wordCountList})  //存一下这个月份的话题数据
-                    designFre.push({time:time, design:1, undesign:0});
+            }else{
+                // 存储原来的map和time，然后将map变空
+                console.log(lastTime);
+                console.log(wordCountList);
+                console.log(isDesign)
+                console.log(nonDesign)
+                console.log(totalCount)
 
-                }
+                await DesignFrequencySchema.create({
+                    time: lastTime,
+                    designed: isDesign,
+                    undesigned: nonDesign,
+                });
+                await TopicFrequencySchema.create({
+                    time: lastTime,
+                    topics: await getTopicFre(wordCountList),
+                });
+                lastTime = time
+                isDesign = 0
+                nonDesign = 0
+                wordCountList = new Map();
             }
-            else{   //该PR非设计相关的
-                if(timeSave.includes(time))
-                {
-                    let timeIndex = timeSave.indexOf(time)
-                    designFre[timeIndex].undesign++;
-                }
-                else {
-                    timeSave.push(time)
-                    //话题数据好像都是0就不用存了
-                    designFre.push({time: time, design: 0, undesign: 1})
-                }
+            // 这里为了保证只取3年数据
+            if(time == "2019-12"){
+                flag = 0;
+                break;
             }
-            // if()
-            // if(isDesign){
-            //     if(design_fre[time] == null)
-            //         design_fre[time] = 1
-            //     else
-            //         design_fre[time]++
-            // }
+        }
+        if(flag == 0)
+            break; 
+    }
+
+    for(var i = 0; i < designKeyWords.length; i++){
+        await TopicSchema.create({
+            topic: designKeyWords[i],
+            num: totalCount[i],
+        });
+    }
+}
+
+function getTopicFre (wordCountList) {
+    var result = [];
+    for(var i = 0; i < designKeyWords.length; i++){
+        if(wordCountList.has(designKeyWords[i])){
+            var ss = {
+                topic: designKeyWords[i],
+                num: wordCountList.get(designKeyWords[i])
+            };
+            result.push(ss)
         }
     }
-    for(let i = 0; i < prTopicCount.length; i++)
-    {
-        prTopic.push({topic: designKeyWords[i], num: prTopicCount[i]})
-    }
-    var ret = {designFre, prTopic, topicFre}
-    return ret;
+    return result;
 }
 
 function judgeDesign(label){
     var res = [];
     for(let i = 0; i < designKeyWords.length; i++)
     {
-        res.push(label.contains(designKeyWords[i]))
+        if((String(label.description)).includes(designKeyWords[i]))
+            res.push(designKeyWords[i])
     }
     return res;
 }
 
+const getDesignFrequency = async (req, res) => {
+    try {
+        const result = await DesignFrequencySchema.findOne({
+            date: req.body.date
+        });
+        console.log(result);
+        
+        res.status(201).json({ result });
+    } catch (err) {
+        res.status(404).json(err);
+    }
+};
+
+
+const getTopicFrequency = async (req, res) => {
+    try {
+      const result = await TopicFrequencySchema.findOne({
+        date: req.body.date
+        });
+      
+      console.log(result);
+      res.status(201).json({ result });
+    } catch (err) {
+      res.status(404).json(err);
+    }
+};
+
+const getTopic = async (req, res) => {
+    try {
+        const result = await TopicSchema.find({});
+
+        console.log(result);
+        res.status(201).json({ result });
+    } catch (err) {
+      res.status(404).json(err);
+    }
+};
+
+
 module.exports = {
-    DealPullLabels
+    DealPullLabels,
+    getDesignFrequency,
+    getTopicFrequency,
+    getTopic,
 }
