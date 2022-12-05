@@ -453,6 +453,12 @@ const GetDesignMessage = async (req, res) => {
         num: detail.prTopic[i].num
       })
     }
+    for(let i = 0; i < detail.topicFre.length; i++){
+      const CreateTopicFrequency = await TopicFrequencySchema.create({
+        time: detail.topicFre[i].time,
+        details: detail.topicFre[i].wordCountList
+      })
+    }
     // for (let i = 0; i < detail.topicFre.length; i++) {
     //   const CreateTopicFre = await TopicFrequencySchema.create({
 
@@ -495,6 +501,18 @@ const getTopic = async (req, res) => {
   }
 }
 
+const getTopicFrequency = async (req, res) => {
+  try {
+    const ret = TopicFrequencySchema.findOne({
+      date: req.body.date
+    })
+    res.status(201).json({ret})
+  }
+  catch(err){
+    res.status(404).json(err)
+  }
+}
+
 module.exports = {
   GetMessage,
   SearchRepoName,
@@ -502,5 +520,6 @@ module.exports = {
   DeleteRepo,
   GetDesignMessage,
   getDesignFrequency,
-  getTopic
+  getTopic,
+  getTopicFrequency
 };

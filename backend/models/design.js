@@ -55,17 +55,9 @@ const TopicFrequency = ({
         type: String,
         require: [true, 'must provide a time']
     },
-    first: {
-        type: String
-    },
-    firstCount: {
-        type: Number
-    },
-    second: {
-        type: String
-    },
-    secondCount: {
-        type: Number
+    details: {
+        type: [Object],
+        require: [true, 'must provide some details']
     }
 })
 

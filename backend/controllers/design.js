@@ -16,11 +16,11 @@ const designKeyWords = ['code', 'maintain', 'test', 'robust',
 const DealPullLabels = async (req, res) => {
     console.log('Processing labels now')
 
-    var designFre = [{time, design, undesign}]
-    var topicFre = [{time, wordCountList: [{topic, count}]}]
+    var designFre = []  //[{time, design, undesign}]
+    var topicFre = []    //[{time, wordCountList: [{topic, count}]}]
     let timeSave = []   //暂存出现过的月份
     var prTopicCount = [];  //最后需要转为列表数组返回
-    var prTopic = [{topic, num}]
+    var prTopic = []    //[{topic, num}]
     let count = 0;
 
     for(let i = 0; i < designKeyWords.length; i++)
