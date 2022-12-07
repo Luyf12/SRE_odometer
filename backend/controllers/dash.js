@@ -14,11 +14,13 @@ const {
   = require("./company");
 // ===============================
 // ======= add, get all data======
+const FrequencySchema = require("../models/frequency");
 const {
   RepoGetCommitData,
   RepoGetPullData,
   RepoGetIssueData,
-  RepoGetStarData
+  RepoGetStarData,
+  RepoGetCoreContributor
 } = require("./import-db");
 // ===============================
 const { DealPullLabels } = require("./design");
@@ -30,7 +32,8 @@ const octokit = new Octokit({
 
 const GetMessage = async (req, res) => {
   try {
-
+    // 如果存在库，应删除?
+    DeleteRepeat(req.body.owner, req.body.repoName);
     const repoMessage = await octokit.request("GET /repos/{owner}/{repo}", {
       owner: req.body.owner,
       repo: req.body.repoName,
@@ -55,15 +58,18 @@ const GetMessage = async (req, res) => {
         repoMessage.data.name
       ),
     });
-    // ================================
-    const CreateRepo = await RepoSchema.create({
+    // ============ add ===============
+    const CreateFrequency = await FrequencySchema.create({
       name: repoMessage.data.name,
       owner: repoMessage.data.owner.login,
-      uploader: req.body.user,
-      forks: repoMessage.data.forks,
-      stars: repoMessage.data.watchers,
-      open_issues: repoMessage.data.open_issues,
-      //================ modify ==========
+      committers: await RepoGetCoreContributor(
+        repoMessage.data.owner.login,
+        repoMessage.data.name
+      ),
+      pullers: await RepoGetPullData(
+        repoMessage.data.owner.login,
+        repoMessage.data.name
+      ),
       star_frequency: await RepoGetStarData(
         repoMessage.data.owner.login,
         repoMessage.data.name
@@ -75,7 +81,21 @@ const GetMessage = async (req, res) => {
       issue_frequency: await RepoGetIssueData(
         repoMessage.data.owner.login,
         repoMessage.data.name
-      ),
+      )
+    });
+
+    // ================================
+    const CreateRepo = await RepoSchema.create({
+      name: repoMessage.data.name,
+      owner: repoMessage.data.owner.login,
+      uploader: req.body.user,
+      forks: repoMessage.data.forks,
+      stars: repoMessage.data.watchers,
+      open_issues: repoMessage.data.open_issues,
+      //================ modify ==========
+      star_frequency: {},
+      commit_frequency:{},
+      issue_frequency: {},
       // ==================================
       contributors: await RepoGetContributors(
         repoMessage.data.owner.login,
@@ -94,13 +114,12 @@ const GetMessage = async (req, res) => {
         repoMessage.data.owner.login,
         repoMessage.data.name
       )
-      /*new add */
 
     });
     console.log("finish");
-    // res.status(201).json({ status: "success!" });
+    res.status(201).json({ status: "success!" });
   } catch (err) {
-    // res.status(404).json(err);
+    res.status(404).json(err);
     console.log(err);
   }
 };
@@ -142,10 +161,28 @@ const GetDashboard = async (req, res) => {
   }
 };
 
+// =========== add ============
+const DeleteRepeat = async ( owner, name) => {
+  // delete RepoSchema
+  const f1 = await RepoSchema.deleteOne({ 
+    name: name, 
+    owner: owner
+  });
+
+  // delete FrequencySchema
+  const f2 = await FrequencySchema.deleteOne({ 
+    name: name, 
+    owner: owner
+  });
+
+};
+
 const DeleteRepo = async (req, res) => {
   try {
-    const test = await RepoSchema.deleteOne({ _id: ObjectId(req.body.id) });
+    
+    await DeleteRepeat(req.body.owner,req.body.repoName);
     res.status(201).json({ msg: "success!" });
+
   } catch (err) {
     res.status(404).json(err);
   }

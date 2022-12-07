@@ -16,7 +16,7 @@ const {
   getStargazerData,
 } = require("../controllers/company");
 // ===============================
-const { GetFrequency } = require("../controllers/frequency");
+const { GetFrequency, GetCoreUsers } = require("../controllers/frequency");
 // ========== pr ==============
 const { 
   getDesignFrequency ,
@@ -42,6 +42,6 @@ router.route("/stargazerCompany").post(getStargazerData);
 router.route("/issueCompany").post(getIssueData);
 // ===========add frequency ======
 router.route("/getFrequency").post(GetFrequency);
-// ===============================
-
+// =========== add core_users ====
+router.route("/GetCoreUsers").post(GetCoreUsers)
 module.exports = router;
