@@ -22,6 +22,8 @@ const {
   getDesignFrequency ,
   getTopic,
   getTopicFrequency,
+  getWeekDesignFreq,
+  getWeekTopicFreq,
 } = require("../controllers/design");
 
 // ============================
@@ -36,6 +38,9 @@ router.route("/delete").post(DeleteRepo);
 router.route("/getDesign").post(getDesignFrequency);
 router.route("/getTopic").post(getTopic);
 router.route("/getTopicFrequency").post(getTopicFrequency);
+// =========== add week ===============
+router.route("/getWeekDesign").post(getWeekDesignFreq);
+router.route("/getWeekTopicFrequency").post(getWeekTopicFreq)
 // =========== add company=============
 router.route("/committerCompany").post(getCommitterData);
 router.route("/stargazerCompany").post(getStargazerData);
