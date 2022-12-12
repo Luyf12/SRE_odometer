@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const TopicFrequency = ({
+const weekTopicFrequency = ({
     time: {
         type: String,
         require: [true, 'must provide a time']
