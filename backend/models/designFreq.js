@@ -1,18 +1,19 @@
 const mongoose = require('mongoose')
 
 const DesignFrequency = ({
-    time: {
+    owner: {
         type: String,
-        require: [true, 'must provide a time']
+        require: [true, 'must provide an owner']
     },
-    designed: {
-        type: Number,
-        require: [true, 'must provide designed count']
+    name: {
+        type: String,
+        require: [true, 'must provide a name']
     },
-    undesigned: {
-        type: Number,
-        require: [true, 'must provide undesign count']
+    info: {
+        type: [Object],
+        require: [true, 'must provide some info']
     }
+
 })
 
 

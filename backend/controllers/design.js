@@ -12,7 +12,8 @@ const DesignFrequencySchema = require("../models/designFreq");
 const TopicFrequencySchema = require("../models/topicFrequency")
 const TopicSchema = require("../models/topic");
 const weekDesignFreqSchema = require("../models/weekDesignFreq");
-const weekTopicFreqSchema = require("../models/weekTopicFreq")
+const weekTopicFreqSchema = require("../models/weekTopicFreq");
+const weekTopicFreq = require("../models/weekTopicFreq");
 
 const designKeyWords = ['code', 'maintain', 'test', 'robust',
     'perform', 'config', 'document', 'clarif'];
@@ -30,6 +31,10 @@ const DealPullLabels = async (owner, name) => {
     var isDesign = 0, nonDesign = 0;
     var weekDesign = 0, weekNonDesign = 0;
     var flag = 1;
+    var weekDesignRes = []
+    var monthDesignRes = []
+    var weekTopic = []
+    var monthTopic = []
     // 这里只统计最近3年的pr，以月份为单位
     for (var i = 0; ; i++) {
         const pullBody = await octokit.request(
@@ -60,21 +65,28 @@ const DealPullLabels = async (owner, name) => {
 
             if (fullTime < thisWeek) //需要存档当前星期
             {
-                await weekDesignFreqSchema.create({
-                    time: thisWeek,
-                    designed: weekDesign,
-                    undesigned: weekNonDesign
-                });
-                await weekTopicFreqSchema.create({
-                    time: thisWeek,
-                    topics: await getTopicFre(wordCountList),
-                });
+                weekDesignRes.push({thisWeek, weekDesign, weekNonDesign})
+                var lstWord = getTopicFre(weekCountList)
+                weekTopic.push({thisWeek, lstWord})
+                // await weekDesignFreqSchema.create({
+                //     time: thisWeek,
+                //     designed: weekDesign,
+                //     undesigned: weekNonDesign
+                // });
+                // await weekTopicFreqSchema.create({
+                //     time: thisWeek,
+                //     topics: await getTopicFre(wordCountList),
+                // });
                 while (fullTime < thisWeek) {
                     thisWeek.setDate(thisWeek.getDate() - 7)
                 }
                 weekCountList = new Map()
                 weekDesign = 0
                 weekNonDesign = 0
+                for(let j = 0; j < designKeyWords.length; j++)
+                {
+                    weekCountList.set(designKeyWords[j], 0)
+                }
             }
 
             if (time != lastTime)    //存档当前月份
@@ -86,19 +98,27 @@ const DealPullLabels = async (owner, name) => {
                 console.log(nonDesign)
                 console.log(totalCount)
 
-                await DesignFrequencySchema.create({
-                    time: lastTime,
-                    designed: isDesign,
-                    undesigned: nonDesign,
-                });
-                await TopicFrequencySchema.create({
-                    time: lastTime,
-                    topics: await getTopicFre(wordCountList),
-                });
+                monthDesignRes.push({thisWeek, wordDesign, wordNonDesign})
+                var lstWord = getTopicFre(wordCountList)
+                monthTopic.push({time, lstWord})
+                
+                // await DesignFrequencySchema.create({
+                //     time: lastTime,
+                //     designed: isDesign,
+                //     undesigned: nonDesign,
+                // });
+                // await TopicFrequencySchema.create({
+                //     time: lastTime,
+                //     topics: await getTopicFre(wordCountList),
+                // });
                 lastTime = time
                 isDesign = 0
                 nonDesign = 0
                 wordCountList = new Map();
+                for(let j = 0; j < designKeyWords.length; j++)
+                {
+                    wordCountList.set(designKeyWords[j], 0)
+                }
             }
 
             // 这里为了保证只取3年数据
@@ -126,17 +146,8 @@ const DealPullLabels = async (owner, name) => {
                             if (designKeyWords[p] == designRelate[k])
                                 totalCount[p] += 1;
                         }
-                        if (!wordCountList.has(designRelate[k])) {
-                            wordCountList.set(designRelate[k], 1);
-                        } else {
-                            wordCountList.set(designRelate[k], wordCountList.get(designRelate[k]) + 1);
-                        }
-                        if(!weekCountList.has(designRelate[k])){
-                            weekCountList.set(designRelate[k], 1)
-                        }else {
-                            weekCountList.set(designRelate[k], weekCountList.get(designRelate[k])+1)
-                        }
-
+                        wordCountList.set(designRelate[k], wordCountList.get(designRelate[k]) + 1);
+                        weekCountList.set(designRelate[k], weekCountList.get(designRelate[k])+1)
                     }
                 }
             }
@@ -152,6 +163,30 @@ const DealPullLabels = async (owner, name) => {
             num: totalCount[i],
         });
     }
+
+    await weekDesignFreqSchema.create({
+        owner: owner,
+        name: name,
+        info: weekDesignRes
+    })
+
+    await weekTopicFreqSchema.create({
+        owner: owner,
+        name: name,
+        info: weekTopic
+    })
+
+    await DesignFrequencySchema.create({
+        owner: owner,
+        name: name,
+        info: monthDesignRes
+    })
+
+    await TopicFrequencySchema.create({
+        owner: owner,
+        name: name,
+        info: monthTopic
+    })
 }
 
 function getTopicFre(wordCountList) {
