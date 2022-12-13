@@ -1,14 +1,19 @@
 const mongoose = require('mongoose')
 
 const TopicFrequency = ({
-    time: {
+    owner: {
         type: String,
-        require: [true, 'must provide a time']
+        require: [true, 'must provide an owner']
     },
-    topics: {
+    name: {
+        type: String,
+        require: [true, 'must provide a name']
+    },
+    info: {
         type: [Object],
-        required: [true, 'must provide topics and its frequency'],
+        require: [true, 'must provide some info']
     }
+
 })
 
 module.exports = mongoose.model('TopicFrequency', TopicFrequency)
