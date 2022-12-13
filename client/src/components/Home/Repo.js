@@ -37,6 +37,9 @@ const Repo = ({ _id, owner, name, uploader, stars, uploaded_time }) => {
             <Link to={`/analyze/${_id}`} className="btn edit-btn">
              analyze
             </Link>
+            <Link to={`/contrast/${_id}`} className="btn edit-btn">
+             contrast
+            </Link>
           </div>
         </footer>
       </div>

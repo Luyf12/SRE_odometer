@@ -14,6 +14,7 @@
     "axios": "^0.24.0",
     "date-fns": "^2.27.0",
     "echarts": "^5.4.0",
+    "echarts-wordcloud": "^2.1.0",
     "faker": "^5.5.3",
     "lodash": "^4.17.21",
     "moment": "^2.29.1",

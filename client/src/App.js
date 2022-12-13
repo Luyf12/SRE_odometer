@@ -1,6 +1,6 @@
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Landing, Error, Register, DashboardApp, Analyzeboard } from "./pages";
+import { Landing, Error, Register, DashboardApp, Analyzeboard,Contrastboard } from "./pages";
 import { Repos, SharedLayout } from "./pages/Home";
 function App() {
   return (
@@ -11,10 +11,12 @@ function App() {
             <Route index element={<Repos />} />
             <Route path="/dashboard/:id" element={<DashboardApp />} />
             <Route path="/analyze/:id" element={<Analyzeboard />} />
+            <Route path="/contrast/:id" element={<Contrastboard />} />
           </Route>
           <Route path="/login" element={<Register />} />
           <Route path="/landing" element={<Landing />} />
           <Route path="*" element={<Error />} />
+          
         </Routes>
       </BrowserRouter>
     </>

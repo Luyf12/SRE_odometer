@@ -28,6 +28,10 @@ import StarFreqTab from "../components/AnalyzeBoard/StarFreqTab";
 import CommitFreqTab from "../components/AnalyzeBoard/CommitFreqTab";
 import IssueFreqTab from "../components/AnalyzeBoard/IssueFreqTab";
 import Companytab from "../components/AnalyzeBoard/Companytab";
+import PrDesignChart from "../components/AnalyzeBoard/PrDesignChart";
+import TopicBarChart from "../components/AnalyzeBoard/TopicBarChart";
+import TopicPieChart from "../components/AnalyzeBoard/TopicPieChart";
+import TopicWorldCloud from "../components/AnalyzeBoard/TopicWorldCloud";
 export default function Analyzeboard() {
   useEffect(() => {
     getDashBoard(id);
@@ -74,12 +78,10 @@ export default function Analyzeboard() {
           <Grid container spacing={3}>
             <Grid item xs={12} sm={6} md={12}>
               <Card>
-                <Companytab/>
+                <Companytab />
               </Card>
             </Grid>
-           
-               
-            
+
             <Grid item xs={12} sm={6} md={12}>
               <CardHeader title="Stars Frequency" />
               <Card>
@@ -96,6 +98,31 @@ export default function Analyzeboard() {
               <CardHeader title="Issues Frequency" />
               <Card>
                 <IssueFreqTab />
+              </Card>
+            </Grid>
+            <Grid item xs={12} sm={6} md={12}>
+              <CardHeader title="Design Discussions" />
+              <Card>
+                <PrDesignChart />
+              </Card>
+            </Grid>
+            <Grid item xs={12} sm={6} md={12}>
+            <CardHeader title="Design Topics" />
+            </Grid>
+            <Grid item xs={12} sm={6} md={6}>
+              <Card>
+                <TopicPieChart />
+              </Card>
+            </Grid>
+            <Grid item xs={12} sm={6} md={6}>
+              <Card>
+                <TopicWorldCloud />
+              </Card>
+            </Grid>
+            <Grid item xs={12} sm={6} md={12}>
+              <CardHeader title="Top Design Topics" />
+              <Card>
+                <TopicBarChart />
               </Card>
             </Grid>
           </Grid>
