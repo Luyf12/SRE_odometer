@@ -30,7 +30,7 @@ const GetCoreUsers = async (req, res) => {
             owner: req.body.owner,
             name: req.body.name
         });
-        
+
         const data = {
             committers: repo.committers,
             pullers: repo.pullers,

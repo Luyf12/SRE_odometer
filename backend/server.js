@@ -32,13 +32,11 @@ const start = async () => {
     // req = {
     //   body: {
     //     owner:owner,
-    //     name:reponame
+    //     repoName:reponame
 
     //   }
     // }
     // await mes.GetMessage(req,null);
-
-
 
   } catch (error) {
     console.log(error);

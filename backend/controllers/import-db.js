@@ -5,6 +5,7 @@ const octokit = new Octokit({
   auth: `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`,
   //auth可以去https://github.com/settings/tokens生成，上面这个auth是永久的
 });
+const PullNumberSchema = require("../models/pullNumber")
 
 const RepoGetCoreContributor = async ( owner, name ) => {
     const message = await octokit.request(
@@ -129,12 +130,12 @@ const RepoGetCommitData = async (owner,name) => {
     return res;
 };
 
-/*获取pull request信息*/
-const RepoGetPullData = async (owner, name) => {
-    console.log("RepoGetPullData...");
+/*获取每个pull request的编号*/
+const RepoGetPullNumber= async (owner, name) => {
+    console.log("RepoGetPullNumber...");
     let pageid = 1;
-    var pullers = {}
-    
+    var pull_numbers = []
+    // 获取全部url
     while(true){
         if(pageid>400)
             break;
@@ -152,45 +153,108 @@ const RepoGetPullData = async (owner, name) => {
         if(pullMessage.data.length==0){
             break; //没有记录，跳出循环
         }
-        
+
         console.log("processing "+pageid+" page...");
+
         //主循环，可以从这里获取信息,不知道要不要存主体？
         for(var i=0;i<pullMessage.data.length;++i){    
-            console.log("processing...",i);
+            // console.log("processing...",i);
             // 统计核心用户
-            let user_name = pullMessage.data[i].user.login;
-            const changes = await octokit.request(
-                "GET /repos/{owner}/{repo}/pulls/{number}",
-            {
-                owner: owner,
-                repo: name,
-                per_page: 100,
-                page: pageid,
-                state: "all",
-                number: pullMessage.data[i].number
-            });
-            total_changes = changes.data.additions - changes.data.deletions;
-            if(pullers[user_name]==null){
-                pullers[user_name] = total_changes;
-            } else {
-                pullers[user_name] += total_changes;
-            }
-
-
+            // let user_name = pullMessage.data[i].user.login;
+            pull_numbers.push(pullMessage.data[i].number);
         }
         ++pageid;
     }
+    console.log(pull_numbers.length);
+    const is_existed = await PullNumberSchema.findOne({
+        name:name,
+        owner:owner
+    });
+    // if it des not exist, create a new one or update instead
+    if(is_existed == null ) {
+        const f1 = await PullNumberSchema.create({
+            name:name,
+            owner:owner,
+            numbers:pull_numbers,
+            pullers: {'none':0}
+        });
+        console.log("create!");
+
+    } else {
+        const f2 = await PullNumberSchema.updateOne({
+            name:name,
+            owner:owner
+        },
+        {
+            $set:{
+                numbers:pull_numbers,
+                pullers:{'none':0}     
+            }
+        });
+    }
+    return 0;
+}
+/*统计并返回core pullers */
+const RepoGetCorePullers = async (owner, name) => {
+    console.log("RepoGetCorePullers...");
+    const doc = await PullNumberSchema.findOne({
+        name: name,
+        owner: owner
+    });
+    pullers = doc.pullers;
+
+    // pullers = doc.pullers;
+    console.log(pullers,);
+
+    console.log(doc.numbers.length);
+
+    // search for every urls and count
+    for(var i = 0; i<doc.numbers.length; ++i){
+        const changes = await octokit.request(
+            "GET /repos/{owner}/{repo}/pulls/{number}",
+        {
+            owner: owner,
+            repo: name,
+            state: "all",
+            number: doc.numbers[i]
+        });
+        console.log("getting details...",i,"/",doc.numbers.length);
+        user_name = changes.data.user.login;
+        let total_changes = changes.data.additions - changes.data.deletions;
+        if(pullers[user_name]==null){
+            pullers[user_name] = total_changes;
+        } else {
+            pullers[user_name] += total_changes;
+        }
+    }
+    // await PullNumberSchema.updateOne({
+    //     name:name,
+    //     owner:owenr
+    // },
+    // {
+    //     $set:{
+    //         pullers:pullers
+        
+    //     }
+    // });
 
     sorted_pullers = [];
     for(let u in pullers) {
         sorted_pullers.push({name:u, lines: pullers[u]});
     }
-    sorted_pullers = SortAndTrim(sorted_pullers);
-
-    res = sorted_pullers;
+    var res = await SortAndTrim(sorted_pullers);
+    
     console.log(res);
     return res;
 }
+/*根据line of code统计核心puller */
+const RepoGetPullData = async (owner, name) => {
+    const f1 = await RepoGetPullNumber(owner,name);
+    const f2 = await RepoGetCorePullers(owner,name);
+    console.log(f2);
+    return f2;
+}
+
 
 /*获取issue信息
 *此处仅统计了时间相关的信息
