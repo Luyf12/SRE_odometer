@@ -96,7 +96,7 @@ const SearchContainer = () => {
                       onClick={handleSubmit}
                       edge="end"
                     >
-                      <Icon icon="eva:search-outline" color="#2cb1bc" />
+                      <Icon icon="eva:search-outline" color="#2196F3" />
                     </IconButton>
                   </InputAdornment>
                 }
@@ -106,7 +106,7 @@ const SearchContainer = () => {
             <Box sx={{ flexGrow: 1 }} />
             <Stack direction="row" spacing={2}>
               <IconButton onClick={handleClickOpen}>
-                <Icon icon="bx:bx-import" color="#2cb1bc" />
+                <Icon icon="bx:bx-import" color="#2196F3" />
               </IconButton>
               <Button color="primary" onClick={toggleRepos}>
                 {viewMyRepos ? "view all repos" : "view my repos"}

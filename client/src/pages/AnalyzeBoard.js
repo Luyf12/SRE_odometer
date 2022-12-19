@@ -38,6 +38,7 @@ export default function Analyzeboard() {
   const _name = "pytorch";
   const owner = "pytorch";
   const repoName = "pytorch";
+
   useEffect(() => {
     getFrequency(_owner, _name);
   }, []);
@@ -48,7 +49,6 @@ export default function Analyzeboard() {
     star_frequency,
     commit_frequency,
     issue_frequency,
-    _id,
   } = detail;
   console.log(detail);
 
@@ -96,10 +96,11 @@ export default function Analyzeboard() {
               <Toolbar sx={{ mt: 1 }}>
                 <Stack direction="row" spacing={6}>
                   <IconButton onClick={handleClickOpen}>
-                    <Icon icon="bx:bx-import" color="#2cb1bc" />
+                    <Icon icon="bx:bx-import" color="#2196F3" />
                   </IconButton>
                 </Stack>
                 <Stack direction="row" spacing={6}>
+                  <span className="text">Repo: pytorch/pytorch</span>
                   <span className="text">
                     Last update: 2022-12-13T00:45:14.000Z
                   </span>
@@ -107,7 +108,7 @@ export default function Analyzeboard() {
               </Toolbar>
             </AppBar>
             <Dialog open={open} onClose={handleClose}>
-              <DialogTitle>Import Repo</DialogTitle>
+              <DialogTitle>Update Analyze Data</DialogTitle>
               <DialogContent>
                 <Stack direction="row" spacing={2}>
                   <FormRow

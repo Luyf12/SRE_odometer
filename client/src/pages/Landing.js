@@ -12,15 +12,12 @@ function Home() {
         <div className="container page">
           <div className="info">
             <h1>
-              DoubleC
-              <span> DashBoard </span>
+              Odometer
+              <span> Insight </span>
             </h1>
 
             <p>
-              I'm baby viral enamel pin chartreuse cliche retro af selfies
-              kinfolk photo booth plaid jianbing actually squid 3 wolf moon
-              lumbersexual. Hell of humblebrag gluten-free lo-fi man braid
-              leggings.
+            2022 ZJU Software Requirements Engineering Project
             </p>
             
          

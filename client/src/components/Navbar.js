@@ -15,7 +15,7 @@ const Navbar = () => {
         </button>
         <div>
         <Logo className="logo" />
-          <h3 className="logo-text">dashboard</h3>
+          <h3 className="logo-text">Odometer Insight</h3>
         </div>
         {user && (
           <div className="btn-container">
