@@ -1,24 +1,37 @@
 import { useEffect, useRef } from "react";
 import * as echarts from "echarts";
 
-function CompanyList2() {
+function CompanyListCommit(data) {
   const chartRef = useRef(null);
 
   useEffect(() => {
     let chartInstance = echarts.init(chartRef.current);
-    var salvProName = [
-      "facebook",
-      "Microsoft",
-      "NVIDIA",
-      "Meta",
-      "Google",
-      "Intel",
-      "facebookresearch",
-      "Quansight",
-      "facebook inc",
-      "pytorch",
-    ];
-    var salvProValue = [170, 50, 42, 33, 27, 24, 12, 11, 10, 10];
+
+    var salvProName = new Array();
+    var salvProValue = new Array();
+    if (data.data.data != null) {
+      var dataLength = 10;
+      if (data.data.data.committers.length < 10)
+        dataLength = data.data.data.committers.length;
+      for (var i = 0; i < dataLength; i++) {
+        salvProName[i] = data.data.data.committers[i].company;
+        salvProValue[i] = data.data.data.committers[i].num;
+      }
+    }
+
+    // var salvProName = [
+    //   "facebook",
+    //   "Microsoft",
+    //   "NVIDIA",
+    //   "Meta",
+    //   "Google",
+    //   "Intel",
+    //   "facebookresearch",
+    //   "Quansight",
+    //   "facebook inc",
+    //   "pytorch",
+    // ];
+    // var salvProValue = [170, 50, 42, 33, 27, 24, 12, 11, 10, 10];
     var salvProMax = []; //背景按最大值
     for (let i = 0; i < salvProValue.length; i++) {
       salvProMax.push(salvProValue[0]);
@@ -129,4 +142,4 @@ function CompanyList2() {
   );
 }
 
-export default CompanyList2;
+export default CompanyListCommit;

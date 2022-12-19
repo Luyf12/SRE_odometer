@@ -1,24 +1,37 @@
 import { useEffect, useRef } from "react";
 import * as echarts from "echarts";
 
-function CompanyList1() {
+function CompanyListStar(data) {
   const chartRef = useRef(null);
 
   useEffect(() => {
     let chartInstance = echarts.init(chartRef.current);
-    var salvProName = [
-      "facebook",
-      "Microsoft",
-      "Google",
-      "Tsinghua University",
-      "Intel",
-      "NVIDID",
-      "Meta",
-      "ByteDance",
-      "Peking University",
-      "ZheJiang University",
-    ];
-    var salvProValue = [85, 83, 45, 29, 27, 23, 23, 22, 20, 20];
+
+    var salvProName = new Array();
+    var salvProValue = new Array();
+    if (data.data.data != null) {
+      var dataLength = 10;
+      if (data.data.data.stargazers.length < 10)
+        dataLength = data.data.data.stargazers.length;
+      for (var i = 0; i < dataLength; i++) {
+        salvProName[i] = data.data.data.stargazers[i].company;
+        salvProValue[i] = data.data.data.stargazers[i].num;
+      }
+    }
+
+    // var salvProName = [
+    //   "Microsoft",
+    //   "Google",
+    //   "facebook",
+    //   "Tsinghua University",
+    //   "Alibaba",
+    //   "Zhejiang University",
+    //   "Tencent",
+    //   "Peking University",
+    //   "ByteDance",
+    //   "NVIDIA",
+    // ];
+    // var salvProValue = [213, 164, 139, 121, 108, 106, 102, 95, 94, 79];
     var salvProMax = []; //背景按最大值
     for (let i = 0; i < salvProValue.length; i++) {
       salvProMax.push(salvProValue[0]);
@@ -129,4 +142,4 @@ function CompanyList1() {
   );
 }
 
-export default CompanyList1;
+export default CompanyListStar;

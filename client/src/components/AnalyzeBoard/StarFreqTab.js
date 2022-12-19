@@ -4,10 +4,13 @@ import Tab from "@mui/material/Tab";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
+import { useEffect } from "react";
+import { useAppContext } from "../../context/appContext";
 
 import StarFreqChart from "./StarFreqChart";
 
-export default function StarFreqTab() {
+export default function StarFreqTab(data) {
+
   const [value, setValue] = React.useState("2");
 
   const handleChange = (event, newValue) => {
@@ -36,13 +39,15 @@ export default function StarFreqTab() {
           </TabList>
         </Box>
         <TabPanel value="1">
-          <StarFreqChart />
+          <StarFreqChart data={data}/>
         </TabPanel>
+
         <TabPanel value="2">
-          <StarFreqChart />
+          <StarFreqChart data={data}/>
         </TabPanel>
+        
         <TabPanel value="3">
-          <StarFreqChart />
+          <StarFreqChart data={data}/>
         </TabPanel>
       </TabContext>
     </Box>

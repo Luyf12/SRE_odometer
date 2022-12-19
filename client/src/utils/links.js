@@ -9,6 +9,12 @@ const links = [
   },
   {
     id: 2,
+    text: "Anslyze",
+    path: "/analyze",
+    icon: <Icon icon="mdi:chart-bar" />,
+  },
+  {
+    id: 3,
     text: "profile",
     path: "profile",
     icon: <Icon icon="icomoon-free:profile" />,

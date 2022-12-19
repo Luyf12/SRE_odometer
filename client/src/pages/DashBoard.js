@@ -16,7 +16,6 @@ import {
   IssueFrequency,
   ContributorList,
 } from "../components/DashBoard";
-import LineBarChart from "../components/AnalyzeBoard/CompanyChartissue";
 export default function DashboardApp() {
   useEffect(() => {
     getDashBoard(id);
@@ -33,8 +32,6 @@ export default function DashboardApp() {
     issue_frequency,
     contributors,
   } = detail;
-
-  console.log(detail.language);
 
   if (isLoading) {
     return <Loading center />;

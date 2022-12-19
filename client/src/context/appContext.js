@@ -22,6 +22,8 @@ import {
   CHANGE_PAGE,
   CLEAR_FILTERS,
   TOGGLE_SIDEBAR,
+  GET_COMP_BEGIN,
+  GET_COMP_SUCCESS,
 } from "./actions";
 import axios from "axios";
 import reducer from "./reducer";
@@ -30,6 +32,7 @@ const user = localStorage.getItem("name");
 
 export const initialState = {
   isLoading: false,
+  comp_isLoading: false,
   showAlert: false,
   user: user ? JSON.parse(user) : null,
   alertText: "",
@@ -152,6 +155,25 @@ const AppProvider = ({ children }) => {
     getRepos();
   };
 
+  const importAnalyze = async (owner, repoName) => {
+    console.log("import");
+    dispatch({ type: IMPORT_REPO_BEGIN });
+    try {
+      await authFetch.post("/importAnalyzeData", {
+        owner,
+        repoName,
+      });
+      dispatch({
+        type: IMPORT_REPO_SUCCESS,
+      });
+    } catch (error) {
+      dispatch({
+        type: IMPORT_REPO_ERROR,
+        payload: { msg: error.response.data.msg },
+      });
+    }
+  };
+
   const getRepos = async () => {
     dispatch({ type: GET_REPOS_BEGIN });
     try {
@@ -209,6 +231,41 @@ const AppProvider = ({ children }) => {
     dispatch({ type: CLEAR_FILTERS });
   };
 
+  const getFrequency = async (_owner, _name) => {
+    dispatch({ type: GET_DETAIL_BEGIN });
+    try {
+      const { data } = await authFetch.post("/getFrequency", { _owner, _name });
+      const { detail } = data;
+      dispatch({
+        type: GET_DETAIL_SUCCESS,
+        payload: {
+          detail,
+        },
+      });
+    } catch (error) {
+      // logoutUser()
+    }
+  };
+
+  const getCompany = async (_owner, _name) => {
+    console.log("getcom");
+    dispatch({ type: GET_COMP_BEGIN });
+    try {
+      const { data } = await authFetch.post("/getCompany", { _owner, _name });
+      console.log(data);
+      const { comp_detail } = data;
+      console.log(comp_detail);
+      dispatch({
+        type: GET_COMP_SUCCESS,
+        payload: {
+          comp_detail,
+        },
+      });
+    } catch (error) {
+      // logoutUser()
+    }
+  };
+
   return (
     <AppContext.Provider
       value={{
@@ -225,6 +282,9 @@ const AppProvider = ({ children }) => {
         toggleSidebar,
         changePage,
         clearFilters,
+        getFrequency,
+        getCompany,
+        importAnalyze,
       }}
     >
       {children}

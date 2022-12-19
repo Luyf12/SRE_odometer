@@ -7,7 +7,7 @@ import TabPanel from "@mui/lab/TabPanel";
 
 import CommitFreqChart from "./CommitFreqChart";
 
-export default function CommitFreqTab() {
+export default function CommitFreqTab(data) {
   const [value, setValue] = React.useState("2");
 
   const handleChange = (event, newValue) => {
@@ -36,13 +36,13 @@ export default function CommitFreqTab() {
           </TabList>
         </Box>
         <TabPanel value="1">
-          <CommitFreqChart />
+          <CommitFreqChart data={data}/>
         </TabPanel>
         <TabPanel value="2">
-          <CommitFreqChart />
+          <CommitFreqChart data={data}/>
         </TabPanel>
         <TabPanel value="3">
-          <CommitFreqChart />
+          <CommitFreqChart data={data}/>
         </TabPanel>
       </TabContext>
     </Box>

@@ -7,7 +7,8 @@ import TabPanel from "@mui/lab/TabPanel";
 
 import IssueFreqChart from "./IssueFreqChart";
 
-export default function IssueFreqTab() {
+export default function IssueFreqTab(data) {
+
   const [value, setValue] = React.useState("2");
 
   const handleChange = (event, newValue) => {
@@ -36,13 +37,13 @@ export default function IssueFreqTab() {
           </TabList>
         </Box>
         <TabPanel value="1">
-          <IssueFreqChart />
+          <IssueFreqChart data={data}/>
         </TabPanel>
         <TabPanel value="2">
-          <IssueFreqChart />
+          <IssueFreqChart data={data}/>
         </TabPanel>
         <TabPanel value="3">
-          <IssueFreqChart />
+          <IssueFreqChart data={data}/>
         </TabPanel>
       </TabContext>
     </Box>

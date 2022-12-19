@@ -10,96 +10,94 @@ import {
   Stack,
   Toolbar,
   Button,
+  AppBar,
+  IconButton,
 } from "@mui/material";
 import { Card, CardHeader } from "@mui/material";
-import {
-  CommitNumber,
-  IssueNumber,
-  StarNumber,
-  ForkNumber,
-  TimeLine,
-  Language,
-  Contribute,
-  CommitFrequency,
-  IssueFrequency,
-  ContributorList,
-} from "../components/DashBoard";
+import { Icon } from "@iconify/react";
 import StarFreqTab from "../components/AnalyzeBoard/StarFreqTab";
 import CommitFreqTab from "../components/AnalyzeBoard/CommitFreqTab";
 import IssueFreqTab from "../components/AnalyzeBoard/IssueFreqTab";
-import Companytab from "../components/AnalyzeBoard/Companytab";
 import PrDesignChart from "../components/AnalyzeBoard/PrDesignChart";
 import TopicBarChart from "../components/AnalyzeBoard/TopicBarChart";
 import TopicPieChart from "../components/AnalyzeBoard/TopicPieChart";
 import TopicWorldCloud from "../components/AnalyzeBoard/TopicWorldCloud";
+
 export default function Analyzeboard() {
+  const _owner = "pytorch";
+  const _name = "pytorch";
+  const owner = "pytorch";
+  const repoName = "pytorch";
   useEffect(() => {
-    getDashBoard(id);
+    getFrequency(_owner, _name);
   }, []);
-  const { id } = useParams();
-  const { isLoading, detail, getDashBoard } = useAppContext();
+  const { isLoading, detail, getFrequency, importAnalyze } = useAppContext();
   const {
-    forks,
-    stars,
-    open_issues,
-    timeline,
-    language,
+    committers,
+    pullers,
+    star_frequency,
     commit_frequency,
     issue_frequency,
-    contributors,
   } = detail;
-
-  console.log(detail.language);
+  console.log(detail);
 
   if (isLoading) {
     return <Loading center />;
   } else {
-    const contribute = {
-      name: [],
-      contributions: [],
-    };
-
-    if (contributors) {
-      for (var i = 0; i < Math.min(5, contributors.length); ++i) {
-        contribute.name.push(contributors[i].name);
-        contribute.contributions.push(contributors[i].contributions);
-      }
-    }
     localStorage.setItem("starInterval", "month");
     localStorage.setItem("commitInterval", "month");
     localStorage.setItem("issueInterval", "month");
 
+    const handleClickOpen = () => {
+      importAnalyze(owner, repoName);
+      console.log("click");
+    };
+
     return (
       <Container maxWidth="xl">
-        <Box sx={{ pb: 5 }}>
-          <Typography variant="h5">Companies</Typography>
-        </Box>
         <Box>
-          <Grid container spacing={3}>
-            <Grid item xs={12} sm={6} md={12}>
-              <Card>
-                <Companytab />
-              </Card>
-            </Grid>
+          <Box sx={{ flexGrow: 1, mt: 2 }}>
+            <AppBar
+              position="static"
+              color=""
+              sx={{
+                borderRadius: 2,
+                height: 90,
+              }}
+            >
+              <Toolbar sx={{ mt: 1 }}>
+                <Stack direction="row" spacing={6}>
+                  <IconButton onClick={handleClickOpen}>
+                    <Icon icon="bx:bx-import" color="#2cb1bc" />
+                  </IconButton>
+                </Stack>
+                <Stack direction="row" spacing={6}>
+                  <span className="text">Last update: 2022-12-13T00:45:14.000Z</span>
+                </Stack>
+              </Toolbar>
+            </AppBar>
+          </Box>
 
+          <Grid container spacing={3}>
             <Grid item xs={12} sm={6} md={12}>
               <CardHeader title="Stars Frequency" />
               <Card>
-                <StarFreqTab />
+                <StarFreqTab data={star_frequency} />
               </Card>
             </Grid>
             <Grid item xs={12} sm={6} md={12}>
               <CardHeader title="Commits Frequency" />
               <Card>
-                <CommitFreqTab />
+                <CommitFreqTab data={commit_frequency} />
               </Card>
             </Grid>
             <Grid item xs={12} sm={6} md={12}>
               <CardHeader title="Issues Frequency" />
               <Card>
-                <IssueFreqTab />
+                <IssueFreqTab data={issue_frequency} />
               </Card>
             </Grid>
+
             <Grid item xs={12} sm={6} md={12}>
               <CardHeader title="Design Discussions" />
               <Card>
@@ -107,7 +105,7 @@ export default function Analyzeboard() {
               </Card>
             </Grid>
             <Grid item xs={12} sm={6} md={12}>
-            <CardHeader title="Design Topics" />
+              <CardHeader title="Design Topics" />
             </Grid>
             <Grid item xs={12} sm={6} md={6}>
               <Card>

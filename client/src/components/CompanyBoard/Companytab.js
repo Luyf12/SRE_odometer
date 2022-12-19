@@ -4,14 +4,16 @@ import Tab from "@mui/material/Tab";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
-import CompanyList from "./CompanyListstar";
-import CompanyList1 from "./CompanyListissue";
-import CompanyList2 from "./CompanyListstarcommit";
-import CommitFreqChart from "./CommitFreqChart";
-import LineBarChart from "./CompanyChartissue";
-import LineBarChart1 from "./CompanyChartstar";
-import LineBarChart2 from "./CompanyChartcommit";
-export default function Companytab() {
+
+import CompanyListStar from "./CompanyListstar";
+import CompanyListIssue from "./CompanyListissue";
+import CompanyListCommit from "./CompanyListcommit";
+
+import BubbleStar from "./CompanyChartstar";
+import BubbleIssue from "./CompanyChartissue";
+import BubbleCommit from "./CompanyChartcommit";
+
+export default function Companytab(data) {
   const [value, setValue] = React.useState("1");
 
   const handleChange = (event, newValue) => {
@@ -33,17 +35,18 @@ export default function Companytab() {
           </TabList>
         </Box>
         <TabPanel value="1">
-          <LineBarChart1 />
-          <CompanyList />
+          <BubbleStar data={data}/>
+          <CompanyListStar data={data}/>
         </TabPanel>
 
         <TabPanel value="2">
-          <LineBarChart />
-          <CompanyList1 />
+          <BubbleIssue data={data}/>
+          <CompanyListIssue data={data}/>
         </TabPanel>
+
         <TabPanel value="3">
-          <LineBarChart2 />
-          <CompanyList2 />
+          <BubbleCommit data={data}/>
+          <CompanyListCommit data={data}/>
         </TabPanel>
       </TabContext>
     </Box>

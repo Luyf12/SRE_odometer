@@ -1,35 +1,38 @@
 import { useEffect, useRef } from "react";
 import * as echarts from "echarts";
 
-function LineBarChart2() {
+function BubbleStar(data) {
   const chartRef = useRef(null);
 
   useEffect(() => {
     let chartInstance = echarts.init(chartRef.current);
-    var plantCap = [
-      { name: "NVIDIA", value: 42, id: "001" },
-      { name: "pytorch", value: 10, id: "002" },
-      { name: "Meta", value: 33, id: "003" },
-      { name: "facebook", value: 170, id: "004" },
-      { name: "Google", value: 27, id: "005" },
-      { name: "Microsoft", value: 50, id: "006" },
-      { name: "facebookresearch", value: 12, id: "007" },
-      { name: "Intel", value: 24, id: "008" },
-      { name: "Quansight", value: 11, id: "009" },
-      { name: "Facebook Inc", value: 10, id: "010" },
-    ];
+    
+    var plantCap = [];
+    if (data.data.data != null) {
+      console.log(data.data.data.stargazers);
+      var dataLength = 10;
+      if (data.data.data.stargazers.length < 10)
+        dataLength = data.data.data.stargazers.length;
+      for (var i = 0; i < dataLength; i++) {
+        plantCap[i] = {
+          name: data.data.data.stargazers[i].company,
+          value: data.data.data.stargazers[i].num,
+          id: i,
+        };
+      }
+    }
 
     var datalist = [
-      { offset: 80, color: "#f467ce" },
-      { offset: 30, color: "#7aabe2" },
-      { offset: 80, color: "#ff7123" },
-      { offset: 50, color: "#ffc400" },
-      { offset: 20, color: "#5e333f" },
-      { offset: 70, color: "#6b3442" },
-      { offset: 20, color: "#8a3647" },
-      { offset: 80, color: "#68333f" },
-      { offset: 40, color: "#68333f" },
-      { offset: 70, color: "#68333f" },
+      { offset: 80, color: "#68b837" },
+      { offset: 30, color: "#68b837" },
+      { offset: 60, color: "#248ff7" },
+      { offset: 90, color: "#68b837" },
+      { offset: 10, color: "#68b837" },
+      { offset: 60, color: "#248ff7" },
+      { offset: 20, color: "#248ff7" },
+      { offset: 80, color: "#248ff7" },
+      { offset: 40, color: "#68b837" },
+      { offset: 70, color: "#248ff7" },
     ];
 
     var minSymbolSize = 20,
@@ -47,11 +50,8 @@ function LineBarChart2() {
     for (var i = 0; i < plantCap.length; i++) {
       var item = plantCap[i];
       var itemToStyle = datalist[i];
-      var symbolsize = (item.value / sum) * maxVal * 3;
-      if (item.value <= 50) symbolsize = symbolsize * 2.5;
+      var symbolsize = (item.value / sum) * maxVal * 6;
 
-      if (item.value <= 12) symbolsize = symbolsize * 2;
-      symbolsize = symbolsize + 20;
       var offset = [leftLen, itemToStyle.offset, item.id];
       leftLen += len;
       datas.push({
@@ -113,9 +113,9 @@ function LineBarChart2() {
 
   return (
     <div style={{ textAlign: "center" }}>
-      <div ref={chartRef} style={{ height: "400px" }}></div>
+      <div ref={chartRef} style={{ height: "500px" }}></div>
     </div>
   );
 }
 
-export default LineBarChart2;
+export default BubbleStar;

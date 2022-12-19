@@ -21,6 +21,8 @@ import {
   HANDLE_CHANGE,
   CLEAR_FILTERS,
   CHANGE_PAGE,
+  GET_COMP_BEGIN,
+  GET_COMP_SUCCESS,
 } from "./actions";
 import { initialState } from "./appContext";
 
@@ -145,6 +147,17 @@ const reducer = (state, action) => {
       ...state,
       isLoading: false,
       detail: action.payload.detail,
+    };
+  }
+
+  if (action.type === GET_COMP_BEGIN) {
+    return { ...state, comp_isLoading: true };
+  }
+  if (action.type === GET_COMP_SUCCESS) {
+    return {
+      ...state,
+      comp_isLoading: false,
+      comp_detail: action.payload.comp_detail,
     };
   }
 
