@@ -155,10 +155,12 @@ const AppProvider = ({ children }) => {
     getRepos();
   };
 
-  const importAnalyze = async (owner, repoName) => {
+  const importAnalyze = async (repoInfo) => {
     console.log("import");
     dispatch({ type: IMPORT_REPO_BEGIN });
     try {
+      const { owner, repoName } = repoInfo;
+      console.log(owner+" "+repoName);
       await authFetch.post("/importAnalyzeData", {
         owner,
         repoName,

@@ -13,12 +13,12 @@ const links = [
     path: "/analyze",
     icon: <Icon icon="mdi:chart-bar" />,
   },
-  {
-    id: 3,
-    text: "profile",
-    path: "profile",
-    icon: <Icon icon="icomoon-free:profile" />,
-  },
+  // {
+  //   id: 3,
+  //   text: "profile",
+  //   path: "profile",
+  //   icon: <Icon icon="icomoon-free:profile" />,
+  // },
 ];
 
 export default links;

@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { useAppContext } from "../context/appContext";
 import Loading from "../components/Loading";
 import { useParams } from "react-router-dom";
@@ -12,7 +11,17 @@ import {
   Button,
   AppBar,
   IconButton,
+  OutlinedInput,
+  InputLabel,
+  InputAdornment,
+  FormControl,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
 } from "@mui/material";
+import { useState, useEffect } from "react";
+import FormRow from "../components/FormRow";
 import { Card, CardHeader } from "@mui/material";
 import { Icon } from "@iconify/react";
 import StarFreqTab from "../components/AnalyzeBoard/StarFreqTab";
@@ -22,6 +31,7 @@ import PrDesignChart from "../components/AnalyzeBoard/PrDesignChart";
 import TopicBarChart from "../components/AnalyzeBoard/TopicBarChart";
 import TopicPieChart from "../components/AnalyzeBoard/TopicPieChart";
 import TopicWorldCloud from "../components/AnalyzeBoard/TopicWorldCloud";
+import { id } from "date-fns/locale";
 
 export default function Analyzeboard() {
   const _owner = "pytorch";
@@ -38,8 +48,31 @@ export default function Analyzeboard() {
     star_frequency,
     commit_frequency,
     issue_frequency,
+    _id,
   } = detail;
   console.log(detail);
+
+  const initialRepoInfo = {
+    owner: "",
+    repoName: "",
+  };
+  const [open, setOpen] = useState(false);
+  const [repoInfo, setRepoInfo] = useState(initialRepoInfo);
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setRepoInfo(initialRepoInfo);
+    setOpen(false);
+  };
+  const handleInput = (e) => {
+    setRepoInfo({ ...repoInfo, [e.target.name]: e.target.value });
+  };
+  const handleImport = () => {
+    importAnalyze(repoInfo);
+    setRepoInfo(initialRepoInfo);
+    setOpen(false);
+  };
 
   if (isLoading) {
     return <Loading center />;
@@ -47,11 +80,6 @@ export default function Analyzeboard() {
     localStorage.setItem("starInterval", "month");
     localStorage.setItem("commitInterval", "month");
     localStorage.setItem("issueInterval", "month");
-
-    const handleClickOpen = () => {
-      importAnalyze(owner, repoName);
-      console.log("click");
-    };
 
     return (
       <Container maxWidth="xl">
@@ -72,10 +100,39 @@ export default function Analyzeboard() {
                   </IconButton>
                 </Stack>
                 <Stack direction="row" spacing={6}>
-                  <span className="text">Last update: 2022-12-13T00:45:14.000Z</span>
+                  <span className="text">
+                    Last update: 2022-12-13T00:45:14.000Z
+                  </span>
                 </Stack>
               </Toolbar>
             </AppBar>
+            <Dialog open={open} onClose={handleClose}>
+              <DialogTitle>Import Repo</DialogTitle>
+              <DialogContent>
+                <Stack direction="row" spacing={2}>
+                  <FormRow
+                    type="text"
+                    name="owner"
+                    value={repoInfo.owner}
+                    handleChange={handleInput}
+                  />
+                  <FormRow
+                    type="text"
+                    name="repoName"
+                    value={repoInfo.repoName}
+                    handleChange={handleInput}
+                  />
+                </Stack>
+              </DialogContent>
+              <DialogActions>
+                <Button variant="contained" onClick={handleClose}>
+                  Cancel
+                </Button>
+                <Button variant="contained" onClick={handleImport}>
+                  Import
+                </Button>
+              </DialogActions>
+            </Dialog>
           </Box>
 
           <Grid container spacing={3}>
