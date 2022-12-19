@@ -26,7 +26,7 @@ const {
 const { DealPullLabels } = require("./design");
 
 const octokit = new Octokit({
-  auth: `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`,
+  auth: `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`,
   //auth可以去https://github.com/settings/tokens生成，上面这个auth是永久的
 });
 
@@ -40,7 +40,7 @@ const GetMessage = async (req, res) => {
     });
 
     // ================================ 
-    await DealPullLabels(req.body.owner, req.body.repoName);
+    // await DealPullLabels(req.body.owner, req.body.repoName);
     // =========== add ===============
     const CreateCompany = await CompanySchema.create({
       name: repoMessage.data.name,
@@ -59,30 +59,30 @@ const GetMessage = async (req, res) => {
       ),
     });
     // ============ add ===============
-    const CreateFrequency = await FrequencySchema.create({
-      name: repoMessage.data.name,
-      owner: repoMessage.data.owner.login,
-      committers: await RepoGetCoreContributor(
-        repoMessage.data.owner.login,
-        repoMessage.data.name
-      ),
-      pullers: await RepoGetPullData(
-        repoMessage.data.owner.login,
-        repoMessage.data.name
-      ),
-      star_frequency: await RepoGetStarData(
-        repoMessage.data.owner.login,
-        repoMessage.data.name
-      ),
-      commit_frequency: await RepoGetCommitData(
-        repoMessage.data.owner.login,
-        repoMessage.data.name
-      ),
-      issue_frequency: await RepoGetIssueData(
-        repoMessage.data.owner.login,
-        repoMessage.data.name
-      )
-    });
+    // const CreateFrequency = await FrequencySchema.create({
+    //   name: repoMessage.data.name,
+    //   owner: repoMessage.data.owner.login,
+    //   committers: await RepoGetCoreContributor(
+    //     repoMessage.data.owner.login,
+    //     repoMessage.data.name
+    //   ),
+    //   pullers: await RepoGetPullData(
+    //     repoMessage.data.owner.login,
+    //     repoMessage.data.name
+    //   ),
+    //   star_frequency: await RepoGetStarData(
+    //     repoMessage.data.owner.login,
+    //     repoMessage.data.name
+    //   ),
+    //   commit_frequency: await RepoGetCommitData(
+    //     repoMessage.data.owner.login,
+    //     repoMessage.data.name
+    //   ),
+    //   issue_frequency: await RepoGetIssueData(
+    //     repoMessage.data.owner.login,
+    //     repoMessage.data.name
+    //   )
+    // });
 
     // ================================
     const CreateRepo = await RepoSchema.create({
@@ -117,6 +117,52 @@ const GetMessage = async (req, res) => {
 
     });
     console.log("finish");
+    res.status(201).json({ status: "success!" });
+  } catch (err) {
+    res.status(404).json(err);
+    console.log(err);
+  }
+};
+
+const GetAnalyzeData = async (req, res) => {
+  try {
+    // 如果存在库，应删除?
+    // DeleteRepeat(req.body.owner, req.body.repoName);
+    const repoMessage = await octokit.request("GET /repos/{owner}/{repo}", {
+      owner: req.body.owner,
+      repo: req.body.repoName,
+    });
+    console.log("import analyze data start");
+
+    // // ================================ 
+    // await DealPullLabels(req.body.owner, req.body.repoName);
+    // // ============ add ===============
+    // const CreateFrequency = await FrequencySchema.create({
+    //   name: repoMessage.data.name,
+    //   owner: repoMessage.data.owner.login,
+    //   committers: await RepoGetCoreContributor(
+    //     repoMessage.data.owner.login,
+    //     repoMessage.data.name
+    //   ),
+    //   pullers: await RepoGetPullData(
+    //     repoMessage.data.owner.login,
+    //     repoMessage.data.name
+    //   ),
+    //   star_frequency: await RepoGetStarData(
+    //     repoMessage.data.owner.login,
+    //     repoMessage.data.name
+    //   ),
+    //   commit_frequency: await RepoGetCommitData(
+    //     repoMessage.data.owner.login,
+    //     repoMessage.data.name
+    //   ),
+    //   issue_frequency: await RepoGetIssueData(
+    //     repoMessage.data.owner.login,
+    //     repoMessage.data.name
+    //   )
+    // });
+
+    console.log("import analyze data finish");
     res.status(201).json({ status: "success!" });
   } catch (err) {
     res.status(404).json(err);
@@ -482,4 +528,5 @@ module.exports = {
   SearchRepoName,
   GetDashboard,
   DeleteRepo,
+  GetAnalyzeData,
 };

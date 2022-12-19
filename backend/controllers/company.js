@@ -6,7 +6,7 @@ const { Octokit } = require("@octokit/core");
 const res = require("express/lib/response");
 
 const octokit = new Octokit({
-  auth: `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`,
+  auth: `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`,
   //auth可以去https://github.com/settings/tokens生成，上面这个auth是永久的
 });
 
@@ -280,11 +280,25 @@ const RepoGetIssues = async (owner, name) => {
   return result;
 };
 
+const getCompanyData = async (req, res) => {
+  console.log("comp");
+  try {
+    const comp_detail = await CompanySchema.findOne({
+        name: req.body._name,
+        owner: req.body._owner,
+      });
+    console.log(comp_detail);
+    res.status(201).json({ comp_detail });
+  } catch (err) {
+    res.status(404).json(err);
+  }
+};
+
 const getCommitterData = async (req, res) => {
   try {
     const detail = await CompanySchema.findOne({
-        name: req.body.name,
-        owner: req.body.owner,
+        name: req.body._name,
+        owner: req.body._owner,
       });
     const result = detail.committers;
     console.log(result);
@@ -330,4 +344,5 @@ const getStargazerData = async (req, res) => {
     getCommitterData,
     getIssueData,
     getStargazerData,
+    getCompanyData,
   };
