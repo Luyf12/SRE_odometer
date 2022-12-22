@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import main from "../assets/images/main.svg";
+import main from "../assets/images/image.png";
 import Wrapper from "../assets/wrappers/LandingPage";
 import Logo from "../components/Logo";
 function Home() {
