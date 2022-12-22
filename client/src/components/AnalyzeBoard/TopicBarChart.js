@@ -20,6 +20,16 @@ const TopicBarChart = (interval) => {
     let chartInstance = echarts.init(chartRef.current);
     /*****************/
     // Generate data
+    var colorList = [
+      "#003d5b",
+      "#00798c",
+      "#d1495b",
+      "#edae49",
+      "#30638e",
+      "#70a288",
+      "#d5896f",
+      "#dab785",
+    ];
     var category = [
       "22-Dec",
       "22-Nov",
@@ -58,22 +68,30 @@ const TopicBarChart = (interval) => {
       "20-Feb",
       "20-Jan",
     ];
-    var code=[0,2,1,2,4,6,5,7,2,2,4,0,2,3,1,2,0,6,1,0,0,0,1,2,0,2,3,1,0,2,0,0,0,2,0,0];
-    var test=[13,43,63,55,18,9,6,12,5,3,7,1,8,30,11,16,21,27,22,15,12,5,4,12,0,2,7,4,7,7,1,0,1,0,0,0];
-    var perform=[0,6,5,7,9,9,12,11,4,8,7,2,11,7,2,6,9,6,2,2,4,0,1,3,0,2,1,1,0,0,0,0,0,2,0,0];
-    var document=[4,6,3,1,1,7,8,11,0,3,2,4,3,4,2,1,4,6,4,5,6,5,6,7,13,8,7,7,9,11,0,2,7,5,0,3];
+    var code = [
+      6,15,13,20,32,44,39,53,21,15,35,5,19,22,13,19,4,50,12,2,3,6,11,17,2,16,27,8,1,20,7,3,1,15,7,1,
+    ];
+    var test = [
+      24,308,455,395,132,66,43,91,39,22,55,14,63,219,79,117,151,194,158,113,87,39,33,87,7,19,55,30,52,57,8,6,11,5,6,5,
+    ];
+    var perform = [
+      6,45,39,52,70,71,90,83,31,60,51,20,81,55,21,50,65,49,19,16,30,5,10,23,6,17,10,10,1,0,7,1,7,19,6,6,
+    ];
+    var document = [
+      32,48,25,14,8,53,60,81,1,28,18,33,27,34,16,11,30,45,33,37,43,38,46,57,95,61,53,54,68,86,4,17,54,41,6,24,
+    ];
 
-    var category1=[];
-    var code1=[];
-    var test1=[];
-    var perform1=[];
-    var document1=[];
-    for(var i=category.length-1,j=0;i>=0;i--,j++){
-      category1[j]=category[i];
-      code1[j]=code[i];
-      test1[j]=test[i];
-      perform1[j]=perform[i];
-      document1[j]=document[i];
+    var category1 = [];
+    var code1 = [];
+    var test1 = [];
+    var perform1 = [];
+    var document1 = [];
+    for (var i = category.length - 1, j = 0; i >= 0; i--, j++) {
+      category1[j] = category[i];
+      code1[j] = code[i];
+      test1[j] = test[i];
+      perform1[j] = perform[i];
+      document1[j] = document[i];
     }
 
     var option = {
@@ -142,6 +160,7 @@ const TopicBarChart = (interval) => {
           emphasis: {
             focus: "series",
           },
+          color: "#003d5b",
           data: test1,
         },
         {
@@ -154,6 +173,7 @@ const TopicBarChart = (interval) => {
           emphasis: {
             focus: "series",
           },
+          color: "#00798c",
           data: document1,
         },
         {
@@ -166,6 +186,7 @@ const TopicBarChart = (interval) => {
           emphasis: {
             focus: "series",
           },
+          color: "#d1495b",
           data: perform1,
         },
         {
@@ -178,6 +199,7 @@ const TopicBarChart = (interval) => {
           emphasis: {
             focus: "series",
           },
+          color: "#edae49",
           data: code1,
         },
       ],

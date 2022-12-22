@@ -359,13 +359,14 @@ const StarFreqChart = (data) => {
           smooth: true,
           showAllSymbol: true,
           symbol: "emptyCircle",
-          symbolSize: 8,
+          symbolSize: 0,
           yAxisIndex: 1,
           itemStyle: {
             normal: {
-              color: "#F02FC2",
+              color: "#B983FF",
             },
           },
+          lineStyle: { width: 3 },
           data: total,
         },
 
@@ -375,10 +376,10 @@ const StarFreqChart = (data) => {
           barWidth: 10,
           itemStyle: {
             normal: {
-              barBorderRadius: 5,
+              barBorderRadius: 3,
               color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                { offset: 0, color: "#956FD4" },
-                { offset: 1, color: "#3EACE5" },
+                { offset: 0, color: "#47B5FF" },
+                { offset: 1, color: "#1363DF" },
               ]),
             },
           },

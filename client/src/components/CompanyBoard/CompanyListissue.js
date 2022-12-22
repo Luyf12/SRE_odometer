@@ -105,11 +105,11 @@ function CompanyListIssue(data) {
               color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [
                 {
                   offset: 0,
-                  color: "rgb(57,89,255,1)",
+                  color: '#00acee',
                 },
                 {
                   offset: 1,
-                  color: "rgb(46,200,207,1)",
+                  color: '#a7e7ff',
                 },
               ]),
             },

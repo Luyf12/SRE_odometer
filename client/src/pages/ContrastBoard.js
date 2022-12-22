@@ -138,9 +138,9 @@ const dat=[23400,detail.open_issues,detail.forks,detail.stars,3547];
           onChange={handleChange}
         > 
     
-          <MenuItem value={1}>Pytorch vs ASdepthmodel</MenuItem>
-          <MenuItem value={2}>Pytorch vs SDautolayout</MenuItem>
-          <MenuItem value={3}>Pytorch vs TinyG</MenuItem>
+          <MenuItem value={1}>vs ASdepthmodel</MenuItem>
+          <MenuItem value={2}>vs SDautolayout</MenuItem>
+          <MenuItem value={3}>vs TinyG</MenuItem>
         </Select>
       
         <Grid item xs={12} sm={6} md={12}>

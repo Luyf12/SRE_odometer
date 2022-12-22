@@ -23,16 +23,17 @@ function BubbleStar(data) {
     }
 
     var datalist = [
-      { offset: 80, color: "#68b837" },
-      { offset: 30, color: "#68b837" },
-      { offset: 60, color: "#248ff7" },
-      { offset: 90, color: "#68b837" },
-      { offset: 10, color: "#68b837" },
-      { offset: 60, color: "#248ff7" },
-      { offset: 20, color: "#248ff7" },
-      { offset: 80, color: "#248ff7" },
-      { offset: 40, color: "#68b837" },
-      { offset: 70, color: "#248ff7" },
+      
+      { offset: 80, color: '#00acee' },
+      { offset: 30, color: '#00acee' },
+      { offset: 60, color: '#00acee' },
+      { offset: 85, color: '#52cdd5' },
+      { offset: 30, color: '#52cdd5' },
+      { offset: 60, color: '#52cdd5' },
+      { offset: 20, color: '#79d9f1' },
+      { offset: 80, color: '#a7e7ff'},
+      { offset: 40, color: '#79d9f1' },
+      { offset: 70, color: '#a7e7ff' },
     ];
 
     var minSymbolSize = 20,
@@ -50,8 +51,9 @@ function BubbleStar(data) {
     for (var i = 0; i < plantCap.length; i++) {
       var item = plantCap[i];
       var itemToStyle = datalist[i];
-      var symbolsize = (item.value / sum) * maxVal * 6;
-
+      var symbolsize = (item.value / sum) * maxVal * 62;
+    if(item.value<15)symbolsize=symbolsize+50;
+    if(item.value<6)symbolsize=symbolsize+20;
       var offset = [leftLen, itemToStyle.offset, item.id];
       leftLen += len;
       datas.push({
@@ -97,7 +99,7 @@ function BubbleStar(data) {
             normal: {
               show: true,
               formatter: "{b}",
-              color: "#fff",
+              color: "#000",
               textStyle: {
                 fontSize: 12,
               },

@@ -58,23 +58,23 @@ const PrDesignChart = (interval) => {
       "20-Feb",
       "20-Jan",
     ];
-    var barData = [
-      172, 556, 717, 646, 303, 303, 263, 354, 91, 152, 202, 71, 242, 434, 162,
-      242, 343, 455, 283, 222, 222, 101, 111, 242, 131, 121, 172, 121, 162, 202,
-      10, 20, 81, 71, 0, 30,
+    var design = [
+      93,442,549,512,268,268,245,325,124,157,169,87,194,359,162,211,276,357,233,186,167,123,111,204,115,142,155,124,147,177,34,49,77,97,57,49,
     ];
-    var lineData = [
-      1733, 4952, 4863, 4548, 4062, 4128, 5075, 4291, 3058, 2682, 2548, 2332,
-      2033, 2769, 2648, 2904, 3542, 2803, 3501, 3593, 4472, 3770, 2855, 2644,
-      2542, 2698, 2142, 2051, 1762, 1752, 1699, 2014, 1950, 2015, 1344, 1078,
+    var nondesign = [
+      588,1525,1444,1343,1291,1314,1661,1334,1000,855,813,771,618,785,841,912,1112,807,1119,1177,1510,1259,948,826,840,865,671,652,540,521,576,677,648,648,423,346,
     ];
+    var total=[680,1967,1993,1855,1559,1583,1906,1659,1125,1012,982,858,813,1144,1004,1124,1388,1164,1351,1363,1676,1383,1059,1031,955,1007,826,776,687,698,610,726,725,745,480,396];
     var category1=[];
-    var barData1=[];
-    var lineData1=[];
+    var design1=[];
+    var nondesign1=[];
+    var sum=0;
     for(var i=category.length-1,j=0;i>=0;i--,j++){
       category1[j]=category[i];
-      barData1[j]=barData[i];
-      lineData1[j]=lineData[i];
+      design1[j]=design[i];
+      nondesign1[j]=nondesign[i];
+      sum+=design[i]+nondesign[i];
+      total[j]=sum;
     }
 
     // option
@@ -171,41 +171,50 @@ const PrDesignChart = (interval) => {
       ],
 
       series: [
-
+        {
+          name: "total",
+          type: "line",
+          smooth: true,
+          showAllSymbol: true,
+          symbol: "emptyCircle",
+          symbolSize: 0,
+          yAxisIndex: 1,
+          itemStyle: {
+            normal: {
+              color: "#B983FF",
+            },
+          },
+          lineStyle: { width: 3 },
+          data: total,
+        },
         {
           name: "Designed",
           type: "bar",
+          stack: "total",
           barWidth: 10,
           itemStyle: {
             normal: {
-              barBorderRadius: 5,
-              color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                { offset: 0.5, color: "#956FD4" },
-                { offset: 1, color: "#3EACE5" },
-              ]),
+              barBorderRadius: 3,
+              color: "#051367",
             },
           },
-          data: barData1,
+          data: design1,
         },
 
         {
           name: "Non-Desighed",
           type: "bar",
+          stack: "total",
           barGap: "-100%",
           barWidth: 10,
           itemStyle: {
             normal: {
-              barBorderRadius: 5,
-              color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                { offset: 0, color: "rgba(156,107,211,0.5)" },
-                { offset: 0.2, color: "rgba(156,107,211,0.35)" },
-                { offset: 1, color: "rgba(156,107,211,0.2)" },
-              ]),
+              barBorderRadius: 3,
+              color: "#47B5FF",
             },
           },
-          z: -12,
 
-          data: lineData1,
+          data: nondesign1,
         },
       ],
     };

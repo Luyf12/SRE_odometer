@@ -19,54 +19,70 @@ const TopicPieChart = () => {
     let chartInstance = echarts.init(chartRef.current);
     /*****************/
     // Generate data
+    var colorList = [
+      "#003d5b",
+      "#00798c",
+      "#d1495b",
+      "#edae49",
+      "#30638e",
+      "#70a288",
+      "#d5896f",
+      "#dab785",
+    ];
+    var topic = [
+      { value: 3829, name: "test" },
+      { value: 3245, name: "document" },
+      { value: 1381, name: "perform" },
+      { value: 584, name: "code" },
+      { value: 360, name: "config" },
+      { value: 249, name: "clarif" },
+      { value: 95, name: "maintain" },
+      { value: 44, name: "rubust" },
+    ];
     var option = {
       title: {
-        text: 'Design Topics',
-        left: 'center'
+        text: "Design Topics",
+        left: "center",
       },
       tooltip: {
-        trigger: 'item'
+        trigger: "item",
       },
       legend: {
-        orient: 'vertical',
-        left: 'left'
+        orient: "vertical",
+        left: "left",
       },
       series: [
         {
-          name: 'Access From',
-          type: 'pie',
-          radius: ['40%', '70%'],
+          name: "Access From",
+          type: "pie",
+          radius: ["40%", "70%"],
           avoidLabelOverlap: false,
           itemStyle: {
             borderRadius: 10,
-            borderColor: '#fff',
-            borderWidth: 2
+            borderColor: "#fff",
+            borderWidth: 2,
+            normal: {
+              color: function (params) {
+                return colorList[params.dataIndex];
+              },
+            },
           },
           label: {
             show: true,
-            position: 'inside',
+            position: "inside",
             fontSize: 14,
           },
           emphasis: {
             label: {
               show: true,
               fontSize: 40,
-              fontWeight: 'bold'
-            }
+              fontWeight: "bold",
+            },
           },
           labelLine: {
-            show: false
+            show: false,
           },
-          data: [
-            { value: 447, name: "test" },
-            { value: 175, name: "document" },
-            { value: 139, name: "perform" },
-            { value: 63, name: "code" },
-            { value: 60, name: "config" },
-            { value: 49, name: "clarif" },
-            { value: 45, name: "maintain" },
-            { value: 34, name: "rubust" },
-          ],
+          data: topic,
         },
       ],
     };
