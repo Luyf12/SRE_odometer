@@ -94,7 +94,7 @@ function ConList1() {
                 data: salvProMax,
                 itemStyle: {
                     normal: {
-                        color: 'rgba(24,31,68,1)',
+                        color: 'rgba(24,31,68,0)',
                         barBorderRadius: 30,
                     }
                 },

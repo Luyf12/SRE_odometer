@@ -9,7 +9,7 @@ const links = [
   },
   {
     id: 2,
-    text: "Anslytic",
+    text: "Analysis",
     path: "/analyze",
     icon: <Icon icon="mdi:chart-bar" />,
   },
