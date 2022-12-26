@@ -31,9 +31,9 @@ import ConList2 from "../components/ContrastBoard/Conlist2";
 import ConList3 from "../components/ContrastBoard/Conlist3";
 
 import { Card, CardHeader } from "@mui/material";
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
 export default function Contrastboard() {
   const [age, setage] = React.useState(2);
   useEffect(() => {
@@ -53,7 +53,7 @@ export default function Contrastboard() {
   } = detail;
 
   console.log(detail.language);
-const dat=[23400,detail.open_issues,detail.forks,detail.stars,3547];
+  const dat = [244344, detail.open_issues, detail.forks, detail.stars, 3547];
 
   if (isLoading) {
     return <Loading center />;
@@ -70,123 +70,88 @@ const dat=[23400,detail.open_issues,detail.forks,detail.stars,3547];
       }
     }
 
-    const handleChange = (event) => { 
+    const handleChange = (event) => {
       setage(event.target.value);
-      
     };
-  let Mes;
-  let Mes1;
-  let Mes2;
-  let Mes3;
-  if(age==1){
-      Mes=(  <Compare 
-                  
-          total={dat} />
-          )
-      Mes1=(
-           <Companyconstar />
-      )
-     Mes2=(
-      <ConList/>
-     )
-     Mes3=(<Conbin1/>)
-  
-  }
-  else if(age==2){
-      Mes=(  <Compare1
-                  
-          total={dat} />)
-          Mes1=(
-              <Companyconstar1 />
-         )
-         Mes2=(
-          <ConList2/>
-         )
-         Mes3=(<Conbin2/>)
-  }
-  else if(age==3){
-      Mes=(  <Compare2
-                  
-          total={dat} />)
-          Mes1=(
-              <Companyconstar2 />
-         )
-         Mes2=(
-          <ConList3/>
-         ) 
-         Mes3=(<Conbin3/>)
-  }
-   
-  
+    let Mes;
+    let Mes1;
+    let Mes2;
+    let Mes3;
+    if (age == 1) {
+      Mes = <Compare total={dat} />;
+      Mes1 = <Companyconstar />;
+      Mes2 = <ConList />;
+      Mes3 = <Conbin1 />;
+    } else if (age == 2) {
+      Mes = <Compare1 total={dat} />;
+      Mes1 = <Companyconstar1 />;
+      Mes2 = <ConList2 />;
+      Mes3 = <Conbin2 />;
+    } else if (age == 3) {
+      Mes = <Compare2 total={dat} />;
+      Mes1 = <Companyconstar2 />;
+      Mes2 = <ConList3 />;
+      Mes3 = <Conbin3 />;
+    }
+
     return (
-    
       <Container maxWidth="xl">
-      
         <Box sx={{ pb: 5 }}>
-        <Container maxWidth="xl">
-    <Box sx={{ minWidth: 3 }}>
-   
-      <FormControl fullWidth>
-      <Grid container spacing={3}>
-     
-        
-        <Select
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          value={age}
-          label="repo"
-          onChange={handleChange}
-        > 
-    
-          <MenuItem value={1}>vs vue</MenuItem>
-          <MenuItem value={2}>vs django</MenuItem>
-          <MenuItem value={3}>vs node</MenuItem>
-        </Select>
-      
-        <Grid item xs={12} sm={6} md={12}>
-                <Card> {Mes}</Card>
-              
-               
-         </Grid>
-         <Grid item xs={12} sm={6} md={6}>
-              <Card>
-              <Typography variant='h6'>本项目language</Typography>
-              <Conbin />
-                </Card>
-         </Grid>
-         <Grid item xs={12} sm={6} md={6}>
-              <Card>
-              <Typography variant='h6'>对比项目language</Typography>
-            {Mes3}
-                </Card>
-         </Grid>
-       
-         <Grid item xs={12} sm={6} md={12}>
-              <Card>
-              <Typography variant='h6'>Company信息对比</Typography>
-               {Mes1}
-                </Card>
-         </Grid>
-         <Grid item xs={12} sm={6} md={6}>
-              <Card>
-              <Typography variant='h6'>本项目</Typography>
-              <ConList1/>
-                </Card>
-         </Grid>
-         <Grid item xs={12} sm={6} md={6}>
-              <Card>
-                <Typography variant='h6'>对比项目</Typography>
-              {Mes2}
-                </Card>
-         </Grid>
-         </Grid>
-      
-      </FormControl>
-    
-    </Box>
-</Container>
+          <Container maxWidth="xl">
+            <Box sx={{ minWidth: 3 }}>
+              <FormControl fullWidth>
+                <Grid container spacing={3}>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={age}
+                    label="repo"
+                    onChange={handleChange}
+                  >
+                    <MenuItem value={1}>vs vue</MenuItem>
+                    <MenuItem value={2}>vs django</MenuItem>
+                    <MenuItem value={3}>vs node</MenuItem>
+                  </Select>
+
+                  <Grid item xs={12} sm={6} md={12}>
+                    <Card> {Mes}</Card>
+                  </Grid>
+                  <Grid item xs={12} sm={6} md={6}>
+                    <Card>
+                      <Typography variant="h6">本项目language</Typography>
+                      <Conbin />
+                    </Card>
+                  </Grid>
+                  <Grid item xs={12} sm={6} md={6}>
+                    <Card>
+                      <Typography variant="h6">对比项目language</Typography>
+                      {Mes3}
+                    </Card>
+                  </Grid>
+
+                  <Grid item xs={12} sm={6} md={12}>
+                    <Card>
+                      <Typography variant="h6">Company信息对比</Typography>
+                      {Mes1}
+                    </Card>
+                  </Grid>
+                  <Grid item xs={12} sm={6} md={6}>
+                    <Card>
+                      <Typography variant="h6">本项目</Typography>
+                      <ConList1 />
+                    </Card>
+                  </Grid>
+                  <Grid item xs={12} sm={6} md={6}>
+                    <Card>
+                      <Typography variant="h6">对比项目</Typography>
+                      {Mes2}
+                    </Card>
+                  </Grid>
+                </Grid>
+              </FormControl>
+            </Box>
+          </Container>
         </Box>
-       
       </Container>
     );
   }

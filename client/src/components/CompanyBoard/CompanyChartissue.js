@@ -6,7 +6,7 @@ function BubbleIssue(data) {
 
   useEffect(() => {
     let chartInstance = echarts.init(chartRef.current);
-    
+
     var plantCap = [];
     if (data.data.data != null) {
       console.log(data.data.data.issues);
@@ -23,16 +23,16 @@ function BubbleIssue(data) {
     }
 
     var datalist = [
-      { offset: 80, color: '#00acee' },
-      { offset: 30, color: '#00acee' },
-      { offset: 60, color: '#00acee' },
-      { offset: 85, color: '#52cdd5' },
-      { offset: 30, color: '#52cdd5' },
-      { offset: 60, color: '#52cdd5' },
-      { offset: 20, color: '#79d9f1' },
-      { offset: 80, color: '#a7e7ff'},
-      { offset: 40, color: '#79d9f1' },
-      { offset: 70, color: '#a7e7ff' },
+      { offset: 80, color: "#00acee" },
+      { offset: 30, color: "#00acee" },
+      { offset: 60, color: "#00acee" },
+      { offset: 85, color: "#52cdd5" },
+      { offset: 30, color: "#52cdd5" },
+      { offset: 60, color: "#52cdd5" },
+      { offset: 20, color: "#79d9f1" },
+      { offset: 80, color: "#a7e7ff" },
+      { offset: 40, color: "#79d9f1" },
+      { offset: 70, color: "#a7e7ff" },
     ];
 
     var minSymbolSize = 20,
@@ -56,16 +56,16 @@ function BubbleIssue(data) {
         symbolsize = symbolsize * 1.8;
       }
       if (item.value < 15) {
-        symbolsize = symbolsize +30;
+        symbolsize = symbolsize + 30;
       }
       if (item.value > 90) {
-        symbolsize = symbolsize -220;
+        symbolsize = symbolsize - 220;
       }
       if (item.value < 10) {
-        symbolsize = symbolsize +20;
+        symbolsize = symbolsize + 20;
       }
       if (item.value < 16) {
-        symbolsize = symbolsize +20;
+        symbolsize = symbolsize + 20;
       }
       var offset = [leftLen, itemToStyle.offset, item.id];
       leftLen += len;

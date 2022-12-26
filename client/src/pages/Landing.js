@@ -17,10 +17,9 @@ function Home() {
             </h1>
 
             <p>
-            2022 ZJU Software Requirements Engineering Project
+              2022 ZJU Software Requirements Engineering Project
             </p>
-            
-         
+
             <Link to="/login" className="btn btn-hero">
               Login / Register
             </Link>

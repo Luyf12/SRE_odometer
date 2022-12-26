@@ -1,6 +1,13 @@
-
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Landing, Error, Register, DashboardApp, Analyzeboard,Contrastboard,Companyboard } from "./pages";
+import {
+  Landing,
+  Error,
+  Register,
+  DashboardApp,
+  Analyzeboard,
+  Contrastboard,
+  Companyboard,
+} from "./pages";
 import { Repos, SharedLayout } from "./pages/Home";
 function App() {
   return (
@@ -17,7 +24,6 @@ function App() {
           <Route path="/login" element={<Register />} />
           <Route path="/landing" element={<Landing />} />
           <Route path="*" element={<Error />} />
-          
         </Routes>
       </BrowserRouter>
     </>

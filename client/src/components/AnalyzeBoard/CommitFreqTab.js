@@ -36,13 +36,13 @@ export default function CommitFreqTab(data) {
           </TabList>
         </Box>
         <TabPanel value="1">
-          <CommitFreqChart data={data}/>
+          <CommitFreqChart data={data} />
         </TabPanel>
         <TabPanel value="2">
-          <CommitFreqChart data={data}/>
+          <CommitFreqChart data={data} />
         </TabPanel>
         <TabPanel value="3">
-          <CommitFreqChart data={data}/>
+          <CommitFreqChart data={data} />
         </TabPanel>
       </TabContext>
     </Box>

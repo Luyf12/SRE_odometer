@@ -6,41 +6,7 @@ function KeyuserPR(coredata) {
 
   useEffect(() => {
     let chartInstance = echarts.init(chartRef.current);
-    //    var data = [{
-    //         "value": 50,
-    //         "name": "user1"
-    //     }, {
-    //         "value": 18,
-    //         "name": "user2"
-    //     }, {
-    //         "value": 16,
-    //         "name": "user3"
-    //     }, {
-    //         "value": 15,
-    //         "name": "user4"
-    //     }, {
-    //         "value": 14,
-    //         "name": "user5"
-    //     }, {
-    //         "value": 13,
-    //         "name": "user6"
-    //     }, {
-    //         "value": 13,
-    //         "name": "user7"
-    //     }, {
-    //         "value": 11,
-    //         "name": "user8"
-    //     }, {
-    //         "value": 10,
-    //         "name": "user9"
-    //     }, {
-    //         "value": 8,
-    //         "name": "user10"
-    //     }]
 
-    //     for (var n in data) {
-    //         data[n]['name'] = data[n]['name'] + ' num: ' + data[n]['value']
-    //     }
     var data = [];
     if (coredata.data != null) {
       for (var i = 0; i < coredata.data.length; i++) {

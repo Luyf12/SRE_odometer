@@ -99,7 +99,7 @@ export default function Analyzeboard() {
                   </IconButton>
                 </Stack>
                 <Stack direction="row" spacing={6}>
-                <span className="text">Repo: pytorch/pytorch</span>
+                  <span className="text">Repo: pytorch/pytorch</span>
                   <span className="text">
                     Last update: 2022-12-13T00:45:14.000Z
                   </span>
@@ -136,10 +136,10 @@ export default function Analyzeboard() {
           </Box>
 
           <Grid container spacing={3}>
-          <Grid item xs={12} sm={6} md={12}>
+            <Grid item xs={12} sm={6} md={12}>
               <CardHeader title="Core users" />
               <Card>
-                <KeyuserTab data={detail}/>
+                <KeyuserTab data={detail} />
               </Card>
             </Grid>
             <Grid item xs={12} sm={6} md={12}>

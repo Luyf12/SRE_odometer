@@ -26,7 +26,7 @@ const {
 const { DealPullLabels } = require("./design");
 
 const octokit = new Octokit({
-  auth: `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`,
+  auth: `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`,
   //auth可以去https://github.com/settings/tokens生成，上面这个auth是永久的
 });
 

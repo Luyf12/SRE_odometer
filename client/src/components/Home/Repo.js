@@ -38,7 +38,7 @@ const Repo = ({ _id, owner, name, uploader, stars, uploaded_time }) => {
               Company
             </Link>
             <Link to={`/contrast/${_id}`} className="btn edit-btn">
-             Contrast
+              Contrast
             </Link>
           </div>
         </footer>

@@ -19,19 +19,6 @@ function CompanyListCommit(data) {
       }
     }
 
-    // var salvProName = [
-    //   "facebook",
-    //   "Microsoft",
-    //   "NVIDIA",
-    //   "Meta",
-    //   "Google",
-    //   "Intel",
-    //   "facebookresearch",
-    //   "Quansight",
-    //   "facebook inc",
-    //   "pytorch",
-    // ];
-    // var salvProValue = [170, 50, 42, 33, 27, 24, 12, 11, 10, 10];
     var salvProMax = []; //背景按最大值
     for (let i = 0; i < salvProValue.length; i++) {
       salvProMax.push(salvProValue[0]);
@@ -105,11 +92,11 @@ function CompanyListCommit(data) {
               color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [
                 {
                   offset: 0,
-                  color: '#00acee',
+                  color: "#00acee",
                 },
                 {
                   offset: 1,
-                  color: '#a7e7ff',
+                  color: "#a7e7ff",
                 },
               ]),
             },

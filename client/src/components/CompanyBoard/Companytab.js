@@ -35,18 +35,18 @@ export default function Companytab(data) {
           </TabList>
         </Box>
         <TabPanel value="1">
-          <BubbleStar data={data}/>
-          <CompanyListStar data={data}/>
+          <BubbleStar data={data} />
+          <CompanyListStar data={data} />
         </TabPanel>
 
         <TabPanel value="2">
-          <BubbleIssue data={data}/>
-          <CompanyListIssue data={data}/>
+          <BubbleIssue data={data} />
+          <CompanyListIssue data={data} />
         </TabPanel>
 
         <TabPanel value="3">
-          <BubbleCommit data={data}/>
-          <CompanyListCommit data={data}/>
+          <BubbleCommit data={data} />
+          <CompanyListCommit data={data} />
         </TabPanel>
       </TabContext>
     </Box>

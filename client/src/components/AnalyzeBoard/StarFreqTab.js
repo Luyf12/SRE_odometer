@@ -10,7 +10,6 @@ import { useAppContext } from "../../context/appContext";
 import StarFreqChart from "./StarFreqChart";
 
 export default function StarFreqTab(data) {
-
   const [value, setValue] = React.useState("2");
 
   const handleChange = (event, newValue) => {
@@ -39,15 +38,15 @@ export default function StarFreqTab(data) {
           </TabList>
         </Box>
         <TabPanel value="1">
-          <StarFreqChart data={data}/>
+          <StarFreqChart data={data} />
         </TabPanel>
 
         <TabPanel value="2">
-          <StarFreqChart data={data}/>
+          <StarFreqChart data={data} />
         </TabPanel>
-        
+
         <TabPanel value="3">
-          <StarFreqChart data={data}/>
+          <StarFreqChart data={data} />
         </TabPanel>
       </TabContext>
     </Box>

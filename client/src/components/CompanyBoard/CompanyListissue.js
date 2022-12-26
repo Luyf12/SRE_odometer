@@ -19,19 +19,6 @@ function CompanyListIssue(data) {
       }
     }
 
-    // var salvProName = [
-    //   "facebook",
-    //   "Microsoft",
-    //   "Google",
-    //   "Tsinghua University",
-    //   "Intel",
-    //   "NVIDID",
-    //   "Meta",
-    //   "ByteDance",
-    //   "Peking University",
-    //   "ZheJiang University",
-    // ];
-    // var salvProValue = [85, 83, 45, 29, 27, 23, 23, 22, 20, 20];
     var salvProMax = []; //背景按最大值
     for (let i = 0; i < salvProValue.length; i++) {
       salvProMax.push(salvProValue[0]);
@@ -105,11 +92,11 @@ function CompanyListIssue(data) {
               color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [
                 {
                   offset: 0,
-                  color: '#00acee',
+                  color: "#00acee",
                 },
                 {
                   offset: 1,
-                  color: '#a7e7ff',
+                  color: "#a7e7ff",
                 },
               ]),
             },

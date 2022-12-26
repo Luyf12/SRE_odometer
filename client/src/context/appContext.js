@@ -160,7 +160,7 @@ const AppProvider = ({ children }) => {
     dispatch({ type: IMPORT_REPO_BEGIN });
     try {
       const { owner, repoName } = repoInfo;
-      console.log(owner+" "+repoName);
+      console.log(owner + " " + repoName);
       await authFetch.post("/importAnalyzeData", {
         owner,
         repoName,

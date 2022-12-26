@@ -9,7 +9,6 @@ import { useAppContext } from "../../context/appContext";
 import Keyuser from "./KeyuserCommit";
 import KeyuserPR from "./KeyuserPR";
 
-
 export default function KeyuserTab(data) {
   console.log(data);
 
@@ -30,18 +29,15 @@ export default function KeyuserTab(data) {
           >
             <Tab label="Commit" value="1" />
             <Tab label="Pull Request" value="2" />
-       
           </TabList>
         </Box>
         <TabPanel value="1">
-          <Keyuser data={data.data.committers}/>
+          <Keyuser data={data.data.committers} />
         </TabPanel>
 
         <TabPanel value="2">
-          <KeyuserPR data={data.data.pullers}/>
+          <KeyuserPR data={data.data.pullers} />
         </TabPanel>
-        
-       
       </TabContext>
     </Box>
   );
