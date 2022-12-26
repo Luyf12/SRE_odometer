@@ -7,7 +7,7 @@
 
 ##### mongodb
 
-* 参考这篇安装mongodbhttps://blog.csdn.net/weixin_41466575/article/details/105326230，不要全看！**从”在bin目录下执行mongo命令“这一条开始（包括这一条）不要看！**下载完后先看看mongodb的data目录下有没有“db”这个文件夹，没有就新创建一个
+* 参考这篇安装mongodb https://blog.csdn.net/weixin_41466575/article/details/105326230，不要全看！**从”在bin目录下执行mongo命令“这一条开始（包括这一条）不要看！**下载完后先看看mongodb的data目录下有没有“db”这个文件夹，没有就新创建一个
 * 设置系统环境变量，比如我装的路径是这样：`d:\mongodb\bin`，加到系统环境变量PATH中
 
 * 因为新版的mongodb没有Mongo.exe，需要安装mongosh(mongodb 的shell)。平时操作数据库就在mongosh中操作。
